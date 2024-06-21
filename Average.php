@@ -1,9 +1,15 @@
 <?php
 
-    //Connect to the SQL database
-    $serverName = "****,port#";
-    $connectionInfo = array("Database"=>"****", "Uid"=>"****", "PWD"=>"****");
-    $connection = sqlsrv_connect( $serverName, $connectionInfo);
+    //Connect to the SQL database locally
+    $serverName = "desktop-ecie849\sqlexpress";
+    $connectionInfo = array("Database"=>"GameRatings", "Uid"=>"", "PWD"=>"");
+    $connection = sqlsrv_connect($serverName, $connectionInfo);
+
+    
+    //Connect to the SQL database Web Server (credentials hidden)
+    //$serverName = "****,port#";
+    //$connectionInfo = array("Database"=>"****", "Uid"=>"****", "PWD"=>"****");
+    //$connection = sqlsrv_connect( $serverName, $connectionInfo);
 
     //get game ID from html query
     $q = $_REQUEST["q"];
