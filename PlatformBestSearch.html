@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Test Homepage</title>
+        <link href="PageStyling.css" rel="stylesheet" type="text/css">
+        <h1 style="width: 800px; height: 100px; margin: auto; display: flex; align-items: center; text-align: center; background-color: #6666ff"><a style="margin: auto 10px; color: white; font-size: 50px; text-decoration: none;" href="https://gameratingsapp.com/">  Games Ratings</a></h1>
+        <br>
+        <hr style="width: 800px; margin: auto;">
+        <br>
+        <script>
+            function showDescription() {
+                var xmlhttp = new XMLHttpRequest();
+                var strings = window.location.search.split("=");
+                var searchQuery = strings[1];
+
+                xmlhttp.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("description").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "PlatformBest.php?q=" + searchQuery, true);
+                xmlhttp.send();
+            }
+
+            function populateDevDropdown() {
+                var xmlhttpDevDropdown = new XMLHttpRequest();
+
+                xmlhttpDevDropdown.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("developers").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpDevDropdown.open("GET", "AllDevs.php", false);
+                xmlhttpDevDropdown.send();
+            }
+
+            function populatePubDropdown() {
+                var xmlhttpPubDropdown = new XMLHttpRequest();
+
+                xmlhttpPubDropdown.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("publishers").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpPubDropdown.open("GET", "AllPubs.php", false);
+                xmlhttpPubDropdown.send();
+            }
+
+            function populatePlatforms() {
+                var xmlhttpPlatformDropdown = new XMLHttpRequest();
+
+                xmlhttpPlatformDropdown.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("platforms").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpPlatformDropdown.open("GET", "AllPlatforms.php", false);
+                xmlhttpPlatformDropdown.send();
+            }
+
+            function populateYears() {
+                var year = new Date().getFullYear();
+                var html = "<select id=\"Year\" name=\"Release Year\">";
+                    html += "<option value=\"\"></option>"
+
+                while(year >= 1950) {
+                    html += "<option value=\"\">" + year + "</option>";
+                    year = year - 1;
+                }
+
+                html += "</select>";
+
+                document.getElementById("year").innerHTML = html;
+            }
+
+        </script>
+    </head>
+
+    <body onLoad="showDescription(); populateDevDropdown(); populatePubDropdown(); populatePlatforms(); populateYears();">
+        <div style="width: 800px; margin: auto;">
+            <form action="search.html" method="GET">
+                <label for="Search">Game: </label>
+                <input type="text" id="Game" name="Game">
+
+                <label for="Developer">Developer: </label>
+                <span id="developers"></span>
+                <br><br>
+
+                <label for="Publisher">Publisher: </label>
+                <span id="publishers"></span>
+
+                <label for="Platform">Platform: </label>
+                <span id="platforms"></span>
+                <br><br>
+
+                <label for="Year">Release Year: </label>
+                <span id="year"></span>
+
+                <input type="submit" value="Submit">
+                <br>
+                <hr>
+            </form>
+
+            <p>SEARCH RESULTS:</p>
+            <p><span id="description"></span></p>
+        </div>
+    </body>
+</html>

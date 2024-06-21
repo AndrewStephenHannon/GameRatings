@@ -1,0 +1,19 @@
+.border {
+    border-style: solid;
+    border-color: black;
+}
+
+.box-art {
+    float: left;
+    padding-right: 5px;
+}
+
+.mini-box-art {
+    width: 20px;
+    height: 20px;
+}
+
+.text-under-image {
+    clear: left;
+    display: block;
+}

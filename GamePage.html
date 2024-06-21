@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Game Page</title>
+        <link href="PageStyling.css" rel="stylesheet" type="text/css">
+        <h1 style="width: 800px; height: 100px; margin: auto; display: flex; align-items: center; text-align: center; background-color: #6666ff"><a style="margin: auto 10px; color: white; font-size: 50px; text-decoration: none;" href="https://gameratingsapp.com/">  Games Ratings</a></h1>
+        <br>
+        <hr style="width: 800px; margin: auto;">
+        <br>
+        <script> 
+            function showDescription() {
+                var xmlhttpGameData = new XMLHttpRequest();
+                var strings = window.location.search.split("=");
+                var gameID = strings[1];
+                var pubID;
+                var devID;
+
+                xmlhttpGameData.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        const gameData = JSON.parse(this.responseText);
+
+                        var dateParse = JSON.parse(JSON.stringify(gameData["Release Date NA"]));
+                        var date = JSON.stringify(dateParse["date"]).split(" ");
+                        date = date[0].split("\"");
+
+                        document.getElementById("Title").innerHTML = gameData["Game Name"];
+                        document.getElementById("BoxArt").innerHTML = "<img src=\"" + gameData["BoxArt"] + "\" class=\"box-art\">";
+                        document.getElementById("Description").innerHTML = gameData["Description"];
+                        document.getElementById("ReleaseDate").innerHTML = date[1];
+                        document.getElementById("Genre").innerHTML = gameData["Genre"];
+
+                        pubID = gameData["PubID"];
+                        devID = gameData["DevID"];
+                    }
+                };
+                xmlhttpGameData.open("GET", "GameData.php?q=" + gameID, false);
+                xmlhttpGameData.send();
+
+                var xmlhttpDev = new XMLHttpRequest();
+
+                xmlhttpDev.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("Developer").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpDev.open("GET", "DevData.php?q=" + devID, false);
+                xmlhttpDev.send();
+
+                var xmlhttpPub = new XMLHttpRequest();
+
+                xmlhttpPub.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("Publisher").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpPub.open("GET", "PubData.php?q=" + pubID, false);
+                xmlhttpPub.send();
+
+                var xmlhttpPlatforms = new XMLHttpRequest();
+
+                xmlhttpPlatforms.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("PlatformData").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpPlatforms.open("GET", "PlatformsData.php?q=" + gameID, false);
+                xmlhttpPlatforms.send();
+
+                var xmlhttpPageCount = new XMLHttpRequest();
+
+                xmlhttpPageCount.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+
+                    }
+                }
+                xmlhttpPageCount.open("GET", "ViewCount.php?q=" + gameID, false);
+                xmlhttpPageCount.send();
+
+                var xmlhttpAverage = new XMLHttpRequest();
+                var count = 0;
+                var average;
+                
+                xmlhttpAverage.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("Average").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpAverage.open("GET", "Average.php?q=" + gameID, false);
+                xmlhttpAverage.send();
+
+                var xmlhttpReviewData = new XMLHttpRequest();
+                var reviewsTable = "<table style=\"width: 100%\"><colgroup><col span=\"1\" style=\"width: 30%\"><col span=\"1\" style=\"width: 30%\"><col span=\"1\" style=\"width: 10%\"><col span=\"1\" style=\"width: 15%\"><col span=\"1\" style=\"width: 15%\"></colgroup>";
+                reviewsTable += "<tr><th style=\"text-align: left\"><b>Publication</b></th><th style=\"text-align: left\"><b>Review</b></th><th style=\"text-align: left\"><b>Date</b></th><th style=\"text-align: right\"><b>Score</b></th><th style=\"text-align: right\"><b>Percentage</b></th></tr>";
+                
+                xmlhttpReviewData.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        reviewsTable += this.responseText;
+                        reviewsTable += "</table>";
+
+                        document.getElementById("ReviewData").innerHTML = reviewsTable;
+                    }
+                };
+                xmlhttpReviewData.open("GET", "ReviewData.php?q=" + gameID, false);
+                xmlhttpReviewData.send();
+            }
+        </script>
+    </head>
+
+    <body>
+        <div style="width: 800px; margin: auto;">
+            <form action="search.html" method="GET">
+                <label for="Search">Search: </label>
+                <input type="text" id="Game" name="Game">
+                <input type="hidden" id="Dev" name="Developer">
+                <input type="hidden" id="Pub" name="Publisher">
+                <input type="hidden" id="Platform" name="Platform">
+                <input type="hidden" id="Year" name="Year">
+                <input type="submit" value="Submit">
+                <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=&Year=" style="font-size:12px"> Advanced Search</a>
+                <br>
+                
+                <p style="font-size:16px"><strong>| <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=&Year=">All-Time Best</a>
+                    | <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=Nintendo+Switch&Year=">Nintendo Switch</a> 
+                    | <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=Playstation+5&Year=">Playstation 5</a> 
+                    | <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=Xbox+Series+S%7CX&Year=">Xbox Series X/S</a> 
+                    | <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=PC&Year=">PC</a> |</strong></p>
+                <hr>
+            </form>
+
+            <body onLoad="showDescription()">
+                <div style="width: 800px;">
+                    <body>
+                        <p><b><span style="font-size: 50px;" id="Title"></span></b></p>
+                    </body>
+                </div>
+                <h4 style="width: 800px; height: 20px; background-color: #6666ff; color: white">&nbspAggregated Score</h4>
+                <div style="width: 800px; font-size: 50px;">
+                    <body>
+                        <b><span id="Average"></span></b>
+                    </body>
+                </div>
+                <h4 style="width:800px; height: 20px; background-color: #6666ff; color: white">&nbspDescription</h4>
+                <div style="width: 800px;word-wrap: break-word;">
+                    <body>
+                        <span id="BoxArt"></span><span id="Description"></span><br><br>
+                        <span class="text-under-image">
+                            <br><b>Developer: </b><span id="Developer"></span><br>
+                            <b>Publisher: </b><span id="Publisher"></span><br>
+                            <b>Genre: </b><span id="Genre"></span><br>
+                            <b>Platform: </b><span id="PlatformData"></span><br>
+                            <b>Release Date: </b><span id="ReleaseDate"></span>
+                        </span>
+                    </body>
+                </div>
+                <h4 style="width: 800px; height: 20px; background-color: #6666ff; color: white">&nbspReviews</h4>
+                <div style="width: 800px; display: table;">
+                    <div style="display: table-row;">
+                        <div class="border" style="width: 100%; display: table-cell;">
+                            <span id="ReviewData"></span>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            
+        </div>
+    </body>
+</html>

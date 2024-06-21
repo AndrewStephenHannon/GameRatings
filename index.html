@@ -1,0 +1,83 @@
+﻿<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Ratings</title>
+        <meta charset="utf-8" />
+        <title>Homepage</title>
+        <link href="PageStyling.css" rel="stylesheet" type="text/css">
+        <h1 style="width: 800px; height: 100px; margin: auto; display: flex; align-items: center; text-align: center; background-color: #6666ff"><a style="margin: auto 10px; color: white; font-size: 50px; text-decoration: none;" href="https://gameratingsapp.com/">  Games Ratings</a></h1>
+        <br>
+        <hr style="width: 800px; margin: auto;">
+        <br>
+        <script>
+            function showMostPopular() {
+                var xmlhttpMostPopular = new XMLHttpRequest();
+                var mostPopularTable = "<h4 style=\"width: 550; background-color: #6666ff; color: white; margin-bottom: 3px\">&nbspMost Popular</h4><table style=\"width: 100%\"; rules=\"none\"><colgroup><col span=\"1\" style=\"width: 5%\"><col span=\"1\" style=\"width: 10%\"><col span=\"1\" style=\"width: 75%\"><col span=\"1\" style=\"width: 10%\"></colgroup>";
+
+                xmlhttpMostPopular.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        mostPopularTable += this.responseText;
+                        mostPopularTable += "</table>";
+
+                        document.getElementById("MostPopularTable").innerHTML = mostPopularTable;
+                    }
+                }
+                xmlhttpMostPopular.open("GET", "MostPopular.php", true);
+                xmlhttpMostPopular.send();
+            }
+
+            function mostRecentReleases() {
+                var xmlhttpMostRecentReleases = new XMLHttpRequest();
+                var mostRecentReleasesTable = "<h5 style=\"width: 250; background-color: #C0C0C0; color: #303030; margin-bottom: 2px\">&nbspMost Recent Releases</h5><table style=\"width: 100%;\"; rules=\"none\"><colgroup><col span=\"1\" style=\"width: 5%\"><col span=\"1\" style=\"width: 75%\"><col span=\"1\" style=\"width: 20%\"></colgroup>";
+                    
+                xmlhttpMostRecentReleases.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        mostRecentReleasesTable += this.responseText;
+                        mostRecentReleasesTable += "</table>";
+
+                        document.getElementById("MostRecentReleases").innerHTML = mostRecentReleasesTable;
+                    }               
+                }
+                xmlhttpMostRecentReleases.open("GET", "MostRecentReleases.php", true);
+                xmlhttpMostRecentReleases.send();
+            }
+        </script>
+    </head>
+
+    <body onLoad="showMostPopular(); mostRecentReleases();">
+        <div style="width: 800px; margin: auto;">
+            <form action="search.html" method="GET">
+                <label for="Search">Search: </label>
+                <input type="text" id="Game" name="Game">
+                <input type="hidden" id="Dev" name="Developer">
+                <input type="hidden" id="Pub" name="Publisher">
+                <input type="hidden" id="Platform" name="Platform">
+                <input type="hidden" id="Year" name="Year">
+                <input type="submit" value="Submit">
+                <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=&Year=" style="font-size:12px"> Advanced Search</a>
+                <br>
+                
+                <p style="font-size:16px"><strong>| <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=&Year=">All-Time Best</a>
+                    | <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=Nintendo+Switch&Year=">Nintendo Switch</a> 
+                    | <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=Playstation+5&Year=">Playstation 5</a> 
+                    | <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=Xbox+Series+S%7CX&Year=">Xbox Series X/S</a> 
+                    | <a href="https://gameratingsapp.com/search.html?Game=&Developer=&Publisher=&Platform=PC&Year=">PC</a> |</strong></p>
+                <hr>
+            </form>
+            
+
+
+            <div style="display: table;">
+                <div style="display: table-row;">
+                    <div style="width: 550px;  height: 20px; display: table-cell; padding-right: 10px;">
+                        <span id="MostPopularTable"></span>
+                    </div>
+                    <div style="width: 250px;  height: 20px; display: table-cell">
+                        <span id="MostRecentReleases"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

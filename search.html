@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Search Page</title>
+        <link href="PageStyling.css" rel="stylesheet" type="text/css">
+        <h1 style="width: 800px; height: 100px; margin: auto; display: flex; align-items: center; text-align: center; background-color: #6666ff"><a style="margin: auto 10px; color: white; font-size: 50px; text-decoration: none;" href="https://gameratingsapp.com/">  Games Ratings</a></h1>
+        <br>
+        <hr style="width: 800px; margin: auto;">
+        <br>
+        <script>
+            function populateDevDropdown() {
+                var xmlhttpDevDropdown = new XMLHttpRequest();
+
+                xmlhttpDevDropdown.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("developers").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpDevDropdown.open("GET", "AllDevs.php", false);
+                xmlhttpDevDropdown.send();
+            }
+
+            function populatePubDropdown() {
+                var xmlhttpPubDropdown = new XMLHttpRequest();
+
+                xmlhttpPubDropdown.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("publishers").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpPubDropdown.open("GET", "AllPubs.php", false);
+                xmlhttpPubDropdown.send();
+            }
+
+            function populatePlatforms() {
+                var xmlhttpPlatformDropdown = new XMLHttpRequest();
+
+                xmlhttpPlatformDropdown.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("platforms").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpPlatformDropdown.open("GET", "AllPlatforms.php", false);
+                xmlhttpPlatformDropdown.send();
+            }
+
+            function populateYears() {
+                var year = new Date().getFullYear();
+                var html = "<select id=\"Year\" name=\"Year\">";
+                    html += "<option value=\"\"></option>"
+
+                while(year >= 1950) {
+                    html += "<option value=" + year + ">" + year + "</option>";
+                    year = year - 1;
+                }
+
+                html += "</select>";
+
+                document.getElementById("year").innerHTML = html;
+            }
+
+            function showResults() {
+                var xmlhttpGameResults = new XMLHttpRequest();
+                var strings = window.location.search.split("=");
+
+                var game = new window.URL(location.href).searchParams.get('Game');
+                var dev = new window.URL(location.href).searchParams.get('Developer');
+                var pub = new window.URL(location.href).searchParams.get('Publisher');
+                var platform = new window.URL(location.href).searchParams.get('Platform');
+                var year = new window.URL(location.href).searchParams.get('Year');
+
+                xmlhttpGameResults.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("results").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpGameResults.open("GET", "search.php?Game=" + game + "&Developer=" + dev + "&Publisher=" 
+                                        + pub + "&Platform=" + platform + "&Year=" + year, false);
+                xmlhttpGameResults.send();
+            }
+        </script>
+    </head>
+
+    <body onLoad="populateDevDropdown(); populatePubDropdown(); populatePlatforms(); populateYears(); showResults();">
+        <div style="width: 800px; margin: auto;">
+            <form action="search.html" method="GET">
+                <span id="test"></span>
+                <label for="Search">Game: </label>
+                <input type="text" id="Game" name="Game">
+
+                <label for="Developer">Developer: </label>
+                <span id="developers"></span>
+                <br><br>
+
+                <label for="Publisher">Publisher: </label>
+                <span id="publishers"></span>
+
+                <label for="Platform">Platform: </label>
+                <span id="platforms"></span>
+                <br><br>
+
+                <label for="Year">Release Year: </label>
+                <span id="year"></span>
+
+                <input type="submit" value="Submit">
+                <br>
+                <hr>
+            </form>
+
+            <h4 style="width: 800; background-color: #6666ff; color: white; margin-bottom: 3px">&nbspSearch Results</h4>
+            <p><span id="results"></span></p>
+        </div>
+    </body>
+</html>
