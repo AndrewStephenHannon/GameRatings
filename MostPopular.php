@@ -22,27 +22,39 @@
     $result = sqlsrv_query($connection, $sqlquery);
 
     $response = "";
-    $count = 1;
+    $game_index = 1;
 
     //Parse the necessary data from the results for each game returned and format for the html table
     if($result)
     {
         While($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
-            //change every second entry's background colour to make table look more readable
-            if($count%2==0)
-                $response .= "<tr style=\"background-color:#E0E0E0\">";
+            $response .= "<div class=\"accordion-item\">";
+            $response .= "<h2 class=\"accordion-header\" id=\"heading-" . $game_index . "\">";
+            if($game_index > 1)
+                $response .= "<button class=\"accordion-button collapsed\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#Game-" . $game_index . "\">";
             else
-                $response .= "<tr style=\"padding-right: 5px;\">";
-            $response .= "<td>" . $count . ". </td>";
-            $response .= "<td><img src=\"" . $row["BoxArt"] . "\" width=\"auto\" height=\"50\"></td>";
-            $response .= "<td><a href=\"https://gameratingsapp.com/GamePage.html?id=" . $row["GameID"] .  "\">" . $row["Game Name"] . "</a></td>";
-            if($row["CurrentScore"] > 0)
-                $response .= "<td style=\"text-align: left\">" . number_format($row["CurrentScore"], 2) . "%</td>";
+                $response .= "<button class=\"accordion-button\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#Game-" . $game_index . "\">";
+            $response .= $row["Game Name"];
+            $response .= "</button>";
+            $response .= "</h2>";
+            if($game_index > 1)
+                $response .= "<div id=\"Game-" . $game_index . "\" class=\"accordion-collapse collapse\" data-bs-parent=\"#games\">";
             else
-                $response .= "<td style=\"text-align: right\">N/A</td>";
-            $response .= "</tr>";
+                $response .= "<div id=\"Game-" . $game_index . "\" class=\"accordion-collapse collapse show\" data-bs-parent=\"#games\">";
+            $response .= "<div class=\"accordion-body\">";
+            if($row["CurrentScore"] == null)
+            $response .= "<div class=\"row p-1 justify-content-around bg-secondary rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+            else if($row["CurrentScore"] >= 75)
+                $response .= "<div class=\"row p-1 justify-content-around bg-success rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+            else if($row["CurrentScore"] >= 60)
+                $response .= "<div class=\"row p-1 justify-content-around bg-warning rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+            else
+                $response .= "<div class=\"row p-1 justify-content-around bg-danger rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+            $response .= "</div>";
+            $response .= "</div>";
+            $response .= "</div>";
 
-            $count = $count + 1;
+            $game_index = $game_index + 1;
         }
     }
     //if SQL fails, print out the error

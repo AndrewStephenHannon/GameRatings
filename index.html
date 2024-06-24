@@ -11,14 +11,13 @@
         <script>
             function showMostPopular() {
                 var xmlhttpMostPopular = new XMLHttpRequest();
-                var mostPopularTable = "<h4 style=\"width: 550; background-color: #6666ff; color: white; margin-bottom: 3px\">&nbspMost Popular</h4><table style=\"width: 100%\"; rules=\"none\"><colgroup><col span=\"1\" style=\"width: 5%\"><col span=\"1\" style=\"width: 10%\"><col span=\"1\" style=\"width: 75%\"><col span=\"1\" style=\"width: 10%\"></colgroup>";
+                var mostPopular = "";
 
                 xmlhttpMostPopular.onreadystatechange = function() {
                     if(this.readyState == 4 && this.status == 200) {
-                        mostPopularTable += this.responseText;
-                        mostPopularTable += "</table>";
+                        mostPopular += this.responseText;
 
-                        document.getElementById("MostPopularTable").innerHTML = mostPopularTable;
+                        document.getElementById("MostPopularAccordion").innerHTML = mostPopular;
                     }
                 }
                 xmlhttpMostPopular.open("GET", "MostPopular.php", true);
@@ -79,15 +78,37 @@
             </div>
         </nav>
 
+        <!-- Accordion dropdown for Most Popular feature -->
+         <section id="MostPopular">
+            <div class="container-md">
+                
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 mt-5">
+                        <h2 class="fw-bold px-3">Most Popular</h2>
+                        <hr class="bg-dark"> <!-- override height and colour once I get to doing the custom theme -->
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="accordion" id="games">
+                            <span id="MostPopularAccordion"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+         </section>
+
+
         <div style="width: 800px; margin: auto;">
             <div style="display: table;">
                 <div style="display: table-row;">
-                    <div style="width: 550px;  height: 20px; display: table-cell; padding-right: 10px;">
-                        <span id="MostPopularTable"></span>
-                    </div>
+
                     <div style="width: 250px;  height: 20px; display: table-cell">
                         <span id="MostRecentReleases"></span>
                     </div>
+
                 </div>
             </div>
         </div>
