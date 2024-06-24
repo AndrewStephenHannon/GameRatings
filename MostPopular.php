@@ -28,8 +28,10 @@
     if($result)
     {
         While($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
-            $response .= "<div class=\"accordion-item\">";
+            $response .= "<div class=\"accordion-item\">";  //create accordion item
             $response .= "<h2 class=\"accordion-header\" id=\"heading-" . $game_index . "\">";
+
+            //create accordion button and link to the appropriate game info
             if($game_index > 1)
                 $response .= "<button class=\"accordion-button collapsed\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#Game-" . $game_index . "\">";
             else
@@ -37,21 +39,30 @@
             $response .= $row["Game Name"];
             $response .= "</button>";
             $response .= "</h2>";
+
+            //link game entry to parent accordion object to have collapse when another game is opened
             if($game_index > 1)
                 $response .= "<div id=\"Game-" . $game_index . "\" class=\"accordion-collapse collapse\" data-bs-parent=\"#games\">";
             else
                 $response .= "<div id=\"Game-" . $game_index . "\" class=\"accordion-collapse collapse show\" data-bs-parent=\"#games\">";
-            $response .= "<div class=\"accordion-body\">";
+
+            //set link to game page if clicked anywhere in accordion body
+            $response .= "<div class=\"accordion-body\"><a class=\"text-decoration-none\" href=\"https://gameratingsapp.com/GamePage.html?id=" . $row["GameID"] .  "\">";
+
+            //style game info depending on the current average score the game has
             if($row["CurrentScore"] == null)
-            $response .= "<div class=\"row p-1 justify-content-around bg-secondary rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+            $response .= "<div class=\"row p-1 justify-content-around bg-secondary rounded shadow\">";
             else if($row["CurrentScore"] >= 75)
-                $response .= "<div class=\"row p-1 justify-content-around bg-success rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+                $response .= "<div class=\"row p-1 justify-content-around bg-success rounded shadow\">";
             else if($row["CurrentScore"] >= 60)
-                $response .= "<div class=\"row p-1 justify-content-around bg-warning rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+                $response .= "<div class=\"row p-1 justify-content-around bg-warning rounded shadow\">";
             else
-                $response .= "<div class=\"row p-1 justify-content-around bg-danger rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+                $response .= "<div class=\"row p-1 justify-content-around bg-danger rounded shadow\">";
+
+            //remaining styling for game info
+            $response .= "<div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
             $response .= "</div>";
-            $response .= "</div>";
+            $response .= "</a></div>";
             $response .= "</div>";
 
             $game_index = $game_index + 1;
