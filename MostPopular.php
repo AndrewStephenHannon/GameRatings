@@ -42,7 +42,14 @@
             else
                 $response .= "<div id=\"Game-" . $game_index . "\" class=\"accordion-collapse collapse show\" data-bs-parent=\"#games\">";
             $response .= "<div class=\"accordion-body\">";
-            $response .= "<div class=\"row justify-content-around\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4\"><p>" . $row["Description"] . "</p></div><div class=\"col-2\"><p>" . $row["CurrentScore"] . "</p></div></div>";
+            if($row["CurrentScore"] == null)
+            $response .= "<div class=\"row p-1 justify-content-around bg-secondary rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+            else if($row["CurrentScore"] >= 75)
+                $response .= "<div class=\"row p-1 justify-content-around bg-success rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+            else if($row["CurrentScore"] >= 60)
+                $response .= "<div class=\"row p-1 justify-content-around bg-warning rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+            else
+                $response .= "<div class=\"row p-1 justify-content-around bg-danger rounded shadow\"><div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
             $response .= "</div>";
             $response .= "</div>";
             $response .= "</div>";
