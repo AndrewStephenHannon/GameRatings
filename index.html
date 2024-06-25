@@ -24,6 +24,71 @@
                 xmlhttpMostPopular.send();
             }
 
+            function getTotalNumGames() {
+                var xmlhttpTotalNumGames = new XMLHttpRequest();
+                var numTotalGames = 0;
+                
+                xmlhttpTotalNumGames.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200)  {
+                        numTotalGames = Number(this.responseText);
+
+                        getFeaturedGame(numTotalGames);
+                    }
+                }
+                xmlhttpTotalNumGames.open("GET", "GetTotalGames.php", true);
+                xmlhttpTotalNumGames.send();
+            }
+
+            function getFeaturedGame(numTotalGames) {
+                var xmlhttpFeaturedGame = new XMLHttpRequest();
+
+                //Get featured gameID based on the current date
+                const oneDay = 24 * 60 * 60 * 1000;     //get one day in milliseconds
+                const firstDate = new Date(1900,1,1);   //get a starting date to start counting days from
+                const secondDate = new Date();          //get current date
+                //get the difference between dates in number of days and get the modular of result using total number of games in the database to obtain gameID
+                var gameID = Math.floor((secondDate - firstDate) / oneDay) % numTotalGames;
+                    
+                xmlhttpFeaturedGame.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        //featuredGameData += this.responseText;
+                        const gameData = JSON.parse(this.responseText);
+
+                        document.getElementById("FeaturedGameBoxArt").innerHTML = "<img src=\"" + gameData['BoxArt'] + "\" class=\"img-fluid d-block m-auto\">";
+                        document.getElementById("FeaturedGameGameName").innerHTML = gameData["Game Name"];
+                        document.getElementById("FeaturedGameDescription").innerHTML = gameData['Description'];
+                        document.getElementById("FeaturedGameDeveloper").innerHTML = gameData['Developer Name'];
+                        document.getElementById("FeaturedGamePublisher").innerHTML = gameData['Publisher Name'];
+                        document.getElementById("FeaturedGameGenre").innerHTML = gameData['Genre'];
+
+                        //parse release date im desired format (YYYY-MM-DD)
+                        var parseReleaseDate = JSON.parse(JSON.stringify(gameData["Release Date NA"]));
+                        var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
+                        releaseDate = releaseDate[0].split("\"");
+                        document.getElementById("FeaturedGameReleaseDate").innerHTML = releaseDate[1];
+
+                        //Get the platform data for the featured game
+                        getPlatformData(gameID);
+
+                        document.getElementById("FeaturedGameScore").innerHTML = gameData['CurrentScore'];
+                    }               
+                }
+                xmlhttpFeaturedGame.open("GET", "TestGameData.php?q=" + gameID, true);
+                xmlhttpFeaturedGame.send();
+            }
+
+            function getPlatformData(gameID) {
+                var xmlhttpPlatforms = new XMLHttpRequest();
+
+                xmlhttpPlatforms.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        document.getElementById("FeaturedGamePlatforms").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttpPlatforms.open("GET", "PlatformsData.php?q=" + gameID, false);
+                xmlhttpPlatforms.send();
+            }
+
             function mostRecentReleases() {
                 var xmlhttpMostRecentReleases = new XMLHttpRequest();
                 var mostRecentReleasesTable = "<h5 style=\"width: 250; background-color: #C0C0C0; color: #303030; margin-bottom: 2px\">&nbspMost Recent Releases</h5><table style=\"width: 100%;\"; rules=\"none\"><colgroup><col span=\"1\" style=\"width: 5%\"><col span=\"1\" style=\"width: 75%\"><col span=\"1\" style=\"width: 20%\"></colgroup>";
@@ -42,11 +107,12 @@
         </script>
     </head>
 
-    <body onLoad="showMostPopular(); mostRecentReleases();">
+    <!-- load in JavaScript functions -->
+    <body onLoad="showMostPopular(); mostRecentReleases(); getTotalNumGames()">
         <!-- Navbar with Site Icon, Title and Search bar -->
         <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
-        <nav class="navbar navbar-expand-md top navbar-dark bg-primary bg-gradient p-1">
-            <div class="container-xxl"> <!-- use xxl container to keep icon/title and search bar/button no further than a certain distance from each other in case viewd on extremely large screens  -->
+        <nav class="navbar navbar-expand-md top navbar-dark bg-dark p-1">
+            <div class="container-xxl"> <!-- use xxl container to keep icon/title and search bar/button no further than a certain distance from each other in case viewed on extremely large screens  -->
                 <!-- set the icon for the website and the title (current doesn't link to anything, but will be homepage button)-->
                 <a href="#" class="navbar-brand">
                     <span class="fw-bold text-white h1">
@@ -79,18 +145,20 @@
         </nav>
 
         <!-- Accordion dropdown for Most Popular feature -->
-         <section id="MostPopular">
+        <section class="py-5" id="MostPopular">
             <div class="container-md">
                 
+                <!-- Display title of section on page -->
                 <div class="row justify-content-center">
-                    <div class="col-lg-8 mt-5">
+                    <div class="">
                         <h2 class="fw-bold px-3">Most Popular</h2>
                         <hr class="bg-dark"> <!-- override height and colour once I get to doing the custom theme -->
                     </div>
                 </div>
 
+                <!-- Setup and get contents of the accordion object for displaying top 10 most popular games -->
                 <div class="row justify-content-center">
-                    <div class="col-lg-8">
+                    <div class="">
                         <div class="accordion" id="games">
                             <span id="MostPopularAccordion"></span>
                         </div>
@@ -98,9 +166,51 @@
                 </div>
 
             </div>
-         </section>
+        </section>
 
+        <!-- Featured Game Section -->
+        <section class="bg-dark py-5 text-white" id="FeaturedGame">
+            <div class="container-md">
 
+                <!-- Display title of section on page -->
+                <div class="row justify-content-center">
+                    <div class="">
+                        <h2 class="fw-bold px-3">Featured Game</h2>
+                        <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
+                    </div>
+                </div>
+
+                <!-- Get and display featured game info -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 mb-2">
+                        <span id="FeaturedGameBoxArt"></span>
+                    </div>
+                    <div class="col-lg-9 px-2">
+                        <div class="row">
+                            <h2><span id="FeaturedGameGameName"></span></h2>
+                        </div>
+                        <div class="row">
+                            <p><span id="FeaturedGameDescription"></span></p>
+                            
+                        </div>
+                        <div class="row justify-content-between">
+                            <div class="col-6 Justify-content-start">
+                                <tag class="fw-bold">Developer: </tag><span id="FeaturedGameDeveloper"></span><br>
+                                <tag class="fw-bold">Publisher: </tag><span id="FeaturedGamePublisher"></span><br>
+                                <tag class="fw-bold">Genre: </tag><span id="FeaturedGameGenre"></span><br>
+                                <tag class="fw-bold">Platform: </tag><span id="FeaturedGamePlatforms"></span><br>
+                                <tag class="fw-bold">Release Date: </tag><span id="FeaturedGameReleaseDate"></span>
+                            </div>
+                            <div class="col-6 d-flex justify-content-center align-items-center">
+                                <h1 class="fw-bold" style="transform: scale(2.0,2.0)"><span id="FeaturedGameScore"></span>0%</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
         <div style="width: 800px; margin: auto;">
             <div style="display: table;">
                 <div style="display: table-row;">
