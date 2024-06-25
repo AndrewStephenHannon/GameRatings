@@ -20,30 +20,27 @@
     else
         echo "No connection established<br>";
 
-    //create SQL query to obtain game's platform information
-    $sqlquery = "SELECT TOP 1 * FROM PlatformsTable WHERE GameID=" . $q . ";";
+    //create SQL query to obtain all Game Data (info on game from Game Table joined with the Game's platform
+    //data on the platform table and getting Dev and Pub names from the Developer and Publisher tables)
+    //$sqlquery = "SELECT DeveloperPage.[Developer Name], PublisherPage.[Publisher Name], *
+    //            FROM DeveloperPage, PublisherPage, GamePage INNER JOIN PlatformsTable ON GamePage.GameID = PlatformsTable.GameID 
+    //            WHERE GamePage.GameID=" . $q . " AND GamePage.DevID = DeveloperPage.DevID AND GamePage.PubID = PublisherPage.PubID";
+    $sqlquery = "SELECT DeveloperPage.[Developer Name], PublisherPage.[Publisher Name], * FROM DeveloperPage, PublisherPage, GamePage 
+                WHERE GamePage.GameID=" . $q . " AND GamePage.DevID = DeveloperPage.DevID AND GamePage.PubID = PublisherPage.PubID";
     $result = sqlsrv_query($connection, $sqlquery); //execute SQL query
 
-    $response = "";
-
-    //if the SQL query gets data, read through the data to get the list of platforms for the game and format it for the html page
+    //if the SQL query gets data,store the data in variable to be formatted in json
     //if SQL fails, print out the error
     if($result)
     {
         $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
-
-        foreach($row as $key => $value)
-        {
-            if($value && $key != "GameID")
-                $response .= $key . ", ";
-        }
     }
     else
     {
         die(print_r(sqlsrv_errors(), true));
     }
 
-    echo substr($response, 0, -2); //return the result of the SQL query with html formatting removing the last space and comma created when building the string of platfortms
+    echo json_encode($row); //return the game data results in json format
 
     sqlsrv_close($connection); //close the connection to the database
 ?>
