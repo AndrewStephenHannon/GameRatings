@@ -33,9 +33,9 @@
 
             //create accordion button and link to the appropriate game info
             if($game_index > 1)
-                $response .= "<button class=\"accordion-button collapsed\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#Game-" . $game_index . "\">";
+                $response .= "<button class=\"accordion-button collapsed bg-dark text-white fw-bold fs-5 d-block text-center\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#Game-" . $game_index . "\">";
             else
-                $response .= "<button class=\"accordion-button\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#Game-" . $game_index . "\">";
+                $response .= "<button class=\"accordion-button bg-dark text-white fw-bold fs-5 d-block text-center\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#Game-" . $game_index . "\">";
             $response .= $row["Game Name"];
             $response .= "</button>";
             $response .= "</h2>";
@@ -46,21 +46,19 @@
             else
                 $response .= "<div id=\"Game-" . $game_index . "\" class=\"accordion-collapse collapse show\" data-bs-parent=\"#games\">";
 
-            //set link to game page if clicked anywhere in accordion body
-            $response .= "<div class=\"accordion-body\"><a class=\"text-decoration-none\" href=\"https://gameratingsapp.com/GamePage.html?id=" . $row["GameID"] .  "\">";
-
-            //style game info depending on the current average score the game has
+            //set link to game page if clicked anywhere in accordion body and style game info depending on the current average score the game has
             if($row["CurrentScore"] == null)
-            $response .= "<div class=\"row p-1 justify-content-around bg-secondary rounded shadow\">";
+                $response .= "<div class=\"accordion-body bg-secondary \"><a class=\"text-decoration-none\" href=\"https://gameratingsapp.com/GamePage.html?id=" . $row["GameID"] .  "\">";
             else if($row["CurrentScore"] >= 75)
-                $response .= "<div class=\"row p-1 justify-content-around bg-success rounded shadow\">";
+                $response .= "<div class=\"accordion-body bg-success \"><a class=\"text-decoration-none\" href=\"https://gameratingsapp.com/GamePage.html?id=" . $row["GameID"] .  "\">";
             else if($row["CurrentScore"] >= 60)
-                $response .= "<div class=\"row p-1 justify-content-around bg-warning rounded shadow\">";
+                $response .= "<div class=\"accordion-body bg-warning \"><a class=\"text-decoration-none\" href=\"https://gameratingsapp.com/GamePage.html?id=" . $row["GameID"] .  "\">";
             else
-                $response .= "<div class=\"row p-1 justify-content-around bg-danger rounded shadow\">";
+                $response .= "<div class=\"accordion-body bg-danger \"><a class=\"text-decoration-none\" href=\"https://gameratingsapp.com/GamePage.html?id=" . $row["GameID"] .  "\">";
 
             //remaining styling for game info
-            $response .= "<div class=\"col-lg-4 col-6\"><img class=\"img-fluid\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 col-4 d-flex align-items-center justify-content-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center \">" . $row["CurrentScore"] . "%</p></div></div>";
+            $response .= "<div class=\"row p-1 justify-content-center\">";
+            $response .= "<div class=\"col-lg-4\"><img class=\"img-fluid d-block m-auto\" src=\"" . $row["BoxArt"] . "\"></div><div class=\"col-lg-6 d-flex align-items-center text-white fw-bold\"><p class=\"text-center\">" . $row["Description"] . "</p></div><div class=\"col-2 d-flex align-items-center justify-content-center\"><p class=\"text-white fs-2 fw-bolder text-center\">" . $row["CurrentScore"] . "%</p></div></div>";
             $response .= "</div>";
             $response .= "</a></div>";
             $response .= "</div>";
