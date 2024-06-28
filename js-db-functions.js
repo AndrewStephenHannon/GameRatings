@@ -75,7 +75,7 @@ function getFeaturedGame(numTotalGames) {
             document.getElementById("FeaturedGameScore").innerHTML = gameData['CurrentScore'].toFixed(2);
         }               
     }
-    xmlhttpFeaturedGame.open("GET", "TestGameData.php?q=" + gameID, true);
+    xmlhttpFeaturedGame.open("GET", "GameData.php?q=" + gameID, true);
     xmlhttpFeaturedGame.send();
 }
 
