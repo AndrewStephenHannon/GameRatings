@@ -21,13 +21,14 @@
     $sqlquery = "SELECT TOP 10 * FROM GamePage ORDER BY PageCount DESC";
     $result = sqlsrv_query($connection, $sqlquery);
 
-    $response = "";
-    $game_index = 1;
+    $response = array();
 
     //Parse the necessary data from the results for each game returned and format for the html table
     if($result)
     {
-        While($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+        while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
+            $response[] = $row;
+        /*While($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
             $response .= "<div class=\"accordion-item\">";  //create accordion item
             $response .= "<h2 class=\"accordion-header\" id=\"heading-" . $game_index . "\">";
 
@@ -64,7 +65,7 @@
             $response .= "</div>";
 
             $game_index = $game_index + 1;
-        }
+        }*/
     }
     //if SQL fails, print out the error
     else
@@ -72,7 +73,7 @@
         die(print_r(sqlsrv_errors(), true));
     }
 
-    echo $response; //return the result of the SQL query with html formatting
+    echo json_encode($response); //return the result of the SQL query
 
     sqlsrv_close($connection); //close the connection to the database
 ?>
