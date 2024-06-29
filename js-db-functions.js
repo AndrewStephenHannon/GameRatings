@@ -112,7 +112,7 @@ function mostRecentReleases() {
                 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                 document.getElementById("RecentReleaseDate" + index).innerHTML = months[parseInt(releaseDate[1]-1)] + " " + releaseDate[2] + ", " + releaseDate[0];
 
-                document.getElementById("RecentReleaseBoxArt" + index).innerHTML = "<img  class=\"img-fluid\" src=\"" + mostRecentReleases[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\">";
+                document.getElementById("RecentReleaseBoxArt" + index).innerHTML = "<img  class=\"img-fluid rounded\" src=\"" + mostRecentReleases[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\">";
             }
         }               
     }
