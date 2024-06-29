@@ -23,9 +23,10 @@
 
     $response = array();
 
-    //Get all rows of results and store in array
+    //Check if query resulted in error
     if($result)
     {
+        //Fetch each row of result and store in response array
         while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
             $response[] = $row;
     }

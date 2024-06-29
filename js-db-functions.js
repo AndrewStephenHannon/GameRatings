@@ -17,7 +17,7 @@ function showMostPopular() {
                 }
 
                 document.getElementById("Game" + index + "BoxArt").innerHTML =  "<img src=\"" + mostPopular[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\">"; //fill in html with current game's box art
-                document.getElementById("Game" + index + "Score").innerHTML = mostPopular[i]['CurrentScore'].toFixed(2); //fill in html with current game's aggregated score
+                document.getElementById("Game" + index + "Score").innerHTML = mostPopular[i]['CurrentScore'].toFixed(2); //fill in html with current game's aggregated score to two decimal places
             }
         }
     }
@@ -63,7 +63,7 @@ function getFeaturedGame(numTotalGames) {
             document.getElementById("FeaturedGamePublisher").innerHTML = gameData['Publisher Name'];
             document.getElementById("FeaturedGameGenre").innerHTML = gameData['Genre'];
 
-            //parse release date im desired format (YYYY-MM-DD)
+            //parse release date in desired format (YYYY-MM-DD)
             var parseReleaseDate = JSON.parse(JSON.stringify(gameData["Release Date NA"]));
             var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
             releaseDate = releaseDate[0].split("\"");
@@ -95,14 +95,25 @@ function getPlatformData(gameID) {
 //Call to MostRecentRelease.php to obtain list of the most recetnly released games in the database and populates the Most Recent Releases section of the homepage with formatted HTML and CSS
 function mostRecentReleases() {
     var xmlhttpMostRecentReleases = new XMLHttpRequest();
-    var mostRecentReleasesTable = "<h5 style=\"width: 250; background-color: #C0C0C0; color: #303030; margin-bottom: 2px\">&nbspMost Recent Releases</h5><table style=\"width: 100%;\"; rules=\"none\"><colgroup><col span=\"1\" style=\"width: 5%\"><col span=\"1\" style=\"width: 75%\"><col span=\"1\" style=\"width: 20%\"></colgroup>";
-        
+    
     xmlhttpMostRecentReleases.onreadystatechange = function() {
         if(this.readyState == 4 && this.status == 200) {
-            mostRecentReleasesTable += this.responseText;
-            mostRecentReleasesTable += "</table>";
+            const mostRecentReleases = JSON.parse(this.responseText);
 
-            document.getElementById("MostRecentReleases").innerHTML = mostRecentReleasesTable;
+            
+            //loop through each game in the Most Recent Releases results
+            for(var i=0; i<mostRecentReleases.length; i++) {
+                var index = i+1;
+
+                //parse release date in desired format (YYYY-MM-DD)
+                var parseReleaseDate = JSON.parse(JSON.stringify(mostRecentReleases[i]["Release Date NA"]));
+                var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ")[0];
+                releaseDate = releaseDate.substring(1).split("-");
+                var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                document.getElementById("RecentReleaseDate" + index).innerHTML = months[parseInt(releaseDate[1]-1)] + " " + releaseDate[2] + ", " + releaseDate[0];
+
+                document.getElementById("RecentReleaseBoxArt" + index).innerHTML = "<img  class=\"img-fluid\" src=\"" + mostRecentReleases[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\">";
+            }
         }               
     }
     xmlhttpMostRecentReleases.open("GET", "MostRecentReleases.php", true);
