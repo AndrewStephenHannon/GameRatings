@@ -261,7 +261,7 @@
                     <div class="col-lg-3 mb-2">
                         <span id="FeaturedGameBoxArt"></span>
                     </div>
-                    <div class="col-lg-9 px-2">
+                    <div class="col-lg-9 px-4 px-lg-2">
                         <div class="row">
                             <h2><span id="FeaturedGameName"></span></h2>
                         </div>
@@ -287,17 +287,57 @@
             </div>
         </section>
         
+
         <!-- Most Recent Releases Section -->
-        <section id="RecentReleases">
-            <div style="width: 800px; margin: auto;">
-                <div style="display: table;">
-                    <div style="display: table-row;">
-
-                        <div style="width: 250px;  height: 20px; display: table-cell">
-                            <span id="MostRecentReleases"></span>
-                        </div>
-
+        <section class="py-5 " id="RecentReleases">
+            <div class="container-md">
+            
+                <!-- Display title of section on page -->
+                    <div class="row justify-content-center">
+                        <h2 class="fw-bold px-3">Recent Releases</h2>
+                        <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
                     </div>
+
+                <div class="row my-3 justify-content-center g-0"> <!-- align-items-center (vertical alignment), justify-content-center (horizontal alignment) -->
+                    <!-- g-0 means no gap betwee ncolumn elements (removes gap) -->
+
+
+                    <div class="col-8 col-lg-3">
+                        <div class="card bg-dark border-2">
+                            <div class="card-header text-center text-light fw-bold"><span id="RecentReleaseDate4"></span></div>
+                            <div class="card-body bg-light text-center py-4">
+                                <span id="RecentReleaseBoxArt4"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-8 col-lg-3">
+                        <div class="card bg-dark border-2">
+                            <div class="card-header text-center text-light fw-bold"><span id="RecentReleaseDate3"></span></div>
+                            <div class="card-body bg-light text-center py-4">
+                                <span id="RecentReleaseBoxArt3"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-8 col-lg-3">
+                        <div class="card bg-dark border-2">
+                            <div class="card-header text-center text-light fw-bold"><span id="RecentReleaseDate2"></span></div>
+                            <div class="card-body bg-light text-center py-4">
+                                <span id="RecentReleaseBoxArt2"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-8 col-lg-3">
+                        <div class="card bg-dark border-2">
+                            <div class="card-header text-center text-light fw-bold"><span id="RecentReleaseDate1"></span></div>
+                            <div class="card-body bg-light text-center py-4">
+                                <span id="RecentReleaseBoxArt1"></span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -312,12 +352,77 @@
                         <h2 class="fw-bold px-3 text-center">Contact Us</h2>
                         <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
                     </div>
+
+                    <div class="row justify-content-center">
+                        <div class="text-center">
+                            <p>Experiencing any issues or have a question? Let us know!</p>
+                            <button class="btn btn-light fw-bold" data-bs-toggle="modal" data-bs-target="#query-form">
+                                Send Questions/Comments
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Modal object for Contact Us button -->
-        
+        <div class="modal fade" id="query-form" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="fw-bold">Contact Us</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <label for="email" class="form-label">E-mail Address:</label>
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">
+                                <i class="bi-envelope"></i>
+                            </span>
+                            <input type="email" class="form-control" id="email" placeholder="johnsmith@example.com">
+                        </div>
+
+                        <label for="name" class="form-label">Name:</label>
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">
+                                <i class="bi-person"></i>
+                            </span>
+                            <input type="text" class="form-control" id="name" placeholder="John Smith">
+                        </div>
+
+                        <label for="Query" class="form-label">Question/Comment:</label>
+                        <div class="mb-2">
+                            <textarea name="query" id="query" class="form-control" style="height: 160px" placeholder="Write here..."></textarea>
+                        </div>
+
+                        <div class="text-center mb-2">
+                            <button class="btn btn-secondary" type="submit" data-bs-toggle="modal" data-bs-target="#query-submitted" data-bs-dismiss="modal">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal object for Contact Submit button -->
+        <div class="modal fade" id="query-submitted" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header justify-content-center">
+                        <h5 class="fw-bold text-center">Thank You!</h5>
+                    </div>
+
+                    <div class="modal-body text-center mb-2">
+                        <p>Your question/comment has been submitted. Thank you for your support!</p>
+
+                        <div class="text-center mb-2">
+                            <button class="btn btn-secondary" type="submit" data-bs-toggle="modal" data-bs-target="#query-submitted" data-bs-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>

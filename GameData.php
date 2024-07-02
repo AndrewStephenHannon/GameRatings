@@ -20,8 +20,13 @@
     else
         echo "No connection established<br>";
 
-    //create SQL query to obtain game from html queried game ID
-    $sqlquery = "SELECT TOP 1 * FROM GamePage WHERE GameID=" . $q . ";";
+    //create SQL query to obtain all Game Data (info on game from Game Table joined with the Game's platform
+    //data on the platform table and getting Dev and Pub names from the Developer and Publisher tables)
+    //$sqlquery = "SELECT DeveloperPage.[Developer Name], PublisherPage.[Publisher Name], *
+    //            FROM DeveloperPage, PublisherPage, GamePage INNER JOIN PlatformsTable ON GamePage.GameID = PlatformsTable.GameID 
+    //            WHERE GamePage.GameID=" . $q . " AND GamePage.DevID = DeveloperPage.DevID AND GamePage.PubID = PublisherPage.PubID";
+    $sqlquery = "SELECT DeveloperPage.[Developer Name], PublisherPage.[Publisher Name], * FROM DeveloperPage, PublisherPage, GamePage 
+                WHERE GamePage.GameID=" . $q . " AND GamePage.DevID = DeveloperPage.DevID AND GamePage.PubID = PublisherPage.PubID";
     $result = sqlsrv_query($connection, $sqlquery); //execute SQL query
 
     //if the SQL query gets data,store the data in variable to be formatted in json
@@ -35,7 +40,7 @@
         die(print_r(sqlsrv_errors(), true));
     }
 
-    echo json_encode($row); //return the game data in json format
+    echo json_encode($row); //return the game data results in json format
 
     sqlsrv_close($connection); //close the connection to the database
 ?>
