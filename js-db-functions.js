@@ -147,3 +147,74 @@ function mostRecentReleases() {
     xmlhttpMostRecentReleases.open("GET", "MostRecentReleases.php", true);
     xmlhttpMostRecentReleases.send();
 }
+
+function populateDevDropdown() {
+    var xmlhttpDevDropdown = new XMLHttpRequest();
+
+    xmlhttpDevDropdown.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            document.getElementById("developers").innerHTML = this.responseText;
+        }
+    };
+    xmlhttpDevDropdown.open("GET", "AllDevs.php", false);
+    xmlhttpDevDropdown.send();
+}
+
+function populatePubDropdown() {
+    var xmlhttpPubDropdown = new XMLHttpRequest();
+
+    xmlhttpPubDropdown.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            document.getElementById("publishers").innerHTML = this.responseText;
+        }
+    };
+    xmlhttpPubDropdown.open("GET", "AllPubs.php", false);
+    xmlhttpPubDropdown.send();
+}
+
+function populatePlatforms() {
+    var xmlhttpPlatformDropdown = new XMLHttpRequest();
+
+    xmlhttpPlatformDropdown.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            document.getElementById("platforms").innerHTML = this.responseText;
+        }
+    };
+    xmlhttpPlatformDropdown.open("GET", "AllPlatforms.php", false);
+    xmlhttpPlatformDropdown.send();
+}
+
+function populateYears() {
+    var year = new Date().getFullYear();
+    var html = "<select id=\"Year\" name=\"Year\">";
+        html += "<option value=\"\"></option>"
+
+    while(year >= 1950) {
+        html += "<option value=" + year + ">" + year + "</option>";
+        year = year - 1;
+    }
+
+    html += "</select>";
+
+    document.getElementById("year").innerHTML = html;
+}
+
+function showResults() {
+    var xmlhttpGameResults = new XMLHttpRequest();
+    var strings = window.location.search.split("=");
+
+    var game = new window.URL(location.href).searchParams.get('Game');
+    var dev = new window.URL(location.href).searchParams.get('Developer');
+    var pub = new window.URL(location.href).searchParams.get('Publisher');
+    var platform = new window.URL(location.href).searchParams.get('Platform');
+    var year = new window.URL(location.href).searchParams.get('Year');
+
+    xmlhttpGameResults.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            document.getElementById("results").innerHTML = this.responseText;
+        }
+    };
+    xmlhttpGameResults.open("GET", "search.php?Game=" + game + "&Developer=" + dev + "&Publisher=" 
+                            + pub + "&Platform=" + platform + "&Year=" + year, false);
+    xmlhttpGameResults.send();
+}

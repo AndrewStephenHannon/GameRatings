@@ -1,86 +1,12 @@
-<!DOCTYPE html>
-
-<html>
+<html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <title>Search Page</title>
-        <link href="PageStyling.css" rel="stylesheet" type="text/css">
-        <h1 style="width: 800px; height: 100px; margin: auto; display: flex; align-items: center; text-align: center; background-color: #6666ff"><a style="margin: auto 10px; color: white; font-size: 50px; text-decoration: none;" href="https://gameratingsapp.com/">  Games Ratings</a></h1>
-        <br>
-        <hr style="width: 800px; margin: auto;">
-        <br>
-        <script>
-            function populateDevDropdown() {
-                var xmlhttpDevDropdown = new XMLHttpRequest();
-
-                xmlhttpDevDropdown.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("developers").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpDevDropdown.open("GET", "AllDevs.php", false);
-                xmlhttpDevDropdown.send();
-            }
-
-            function populatePubDropdown() {
-                var xmlhttpPubDropdown = new XMLHttpRequest();
-
-                xmlhttpPubDropdown.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("publishers").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpPubDropdown.open("GET", "AllPubs.php", false);
-                xmlhttpPubDropdown.send();
-            }
-
-            function populatePlatforms() {
-                var xmlhttpPlatformDropdown = new XMLHttpRequest();
-
-                xmlhttpPlatformDropdown.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("platforms").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpPlatformDropdown.open("GET", "AllPlatforms.php", false);
-                xmlhttpPlatformDropdown.send();
-            }
-
-            function populateYears() {
-                var year = new Date().getFullYear();
-                var html = "<select id=\"Year\" name=\"Year\">";
-                    html += "<option value=\"\"></option>"
-
-                while(year >= 1950) {
-                    html += "<option value=" + year + ">" + year + "</option>";
-                    year = year - 1;
-                }
-
-                html += "</select>";
-
-                document.getElementById("year").innerHTML = html;
-            }
-
-            function showResults() {
-                var xmlhttpGameResults = new XMLHttpRequest();
-                var strings = window.location.search.split("=");
-
-                var game = new window.URL(location.href).searchParams.get('Game');
-                var dev = new window.URL(location.href).searchParams.get('Developer');
-                var pub = new window.URL(location.href).searchParams.get('Publisher');
-                var platform = new window.URL(location.href).searchParams.get('Platform');
-                var year = new window.URL(location.href).searchParams.get('Year');
-
-                xmlhttpGameResults.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("results").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpGameResults.open("GET", "search.php?Game=" + game + "&Developer=" + dev + "&Publisher=" 
-                                        + pub + "&Platform=" + platform + "&Year=" + year, false);
-                xmlhttpGameResults.send();
-            }
-        </script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="page_styling.css" type="text/css">
+        <script src="js-db-functions.js"></script> <!-- reference to JavaScript file with all JavaScripts written for website -->
+        <title>Game Ratings</title>
     </head>
 
     <body onLoad="populateDevDropdown(); populatePubDropdown(); populatePlatforms(); populateYears(); showResults();">
@@ -112,5 +38,7 @@
             <h4 style="width: 800; background-color: #6666ff; color: white; margin-bottom: 3px">&nbspSearch Results</h4>
             <p><span id="results"></span></p>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>
 </html>
