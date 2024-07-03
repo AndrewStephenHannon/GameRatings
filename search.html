@@ -9,35 +9,159 @@
         <title>Game Ratings</title>
     </head>
 
-    <body onLoad="populateDevDropdown(); populatePubDropdown(); populatePlatforms(); populateYears(); showResults();">
-        <div style="width: 800px; margin: auto;">
-            <form action="search.html" method="GET">
-                <span id="test"></span>
-                <label for="Search">Game: </label>
-                <input type="text" id="Game" name="Game">
+    <!-- load in JavaScript functions -->
+    <body class="bg-secondary d-flex flex-column" onLoad="populateDevDropdown(); populatePubDropdown(); populatePlatforms(); populateYears(); showResults(); getTotalNumGames()">
+        <!-- Navbar with Site Icon, Title and Search bar -->
+        <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
+        <nav class="navbar navbar-expand-md top navbar-dark bg-dark p-1">
+            <div class="container-xxl"> <!-- use xxl container to keep icon/title and search bar/button no further than a certain distance from each other in case viewed on extremely large screens  -->
+                <!-- set the icon for the website and the title (current doesn't link to anything, but will be homepage button)-->
+                <a href="https://gameratingsapp.com/" class="navbar-brand">
+                    <span class="fw-bold text-white h1">
+                        <i class="bi bi-joystick"></i>
+                        Game Ratings
+                    </span>
+                </a>
 
-                <label for="Developer">Developer: </label>
-                <span id="developers"></span>
-                <br><br>
+                <!-- nav button that appears on smaller screens such as mobile/phone screens -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearchField">
+                    <i class="bi bi-search"></i> <!-- collapsed navbar icon -->
+                </button>
 
-                <label for="Publisher">Publisher: </label>
-                <span id="publishers"></span>
+                <!-- Search bar and submit button for searching games on site. Enclosed in div that hides the search bar and button behind the above navbar toggler button on smaller screen sizes -->
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSearchField">
+                    <form  action="search.html" class="d-flex pt-3" role="search">
+                        <input type="search" id="Game" name="Game" class="form-control me-2" placeholder="Search...">
 
-                <label for="Platform">Platform: </label>
-                <span id="platforms"></span>
-                <br><br>
+                        <!-- hidden search fields to feed search filters once search button is clicked -->
+                        <input type="hidden" id="Dev" name="Developer">
+                        <input type="hidden" id="Pub" name="Publisher">
+                        <input type="hidden" id="Platform" name="Platform">
+                        <input type="hidden" id="Year" name="Year">
 
-                <label for="Year">Release Year: </label>
-                <span id="year"></span>
+                        <!-- search button -->
+                        <button class="btn btn-outline-light fw-bold" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
 
-                <input type="submit" value="Submit">
-                <br>
-                <hr>
-            </form>
+        <section id="AdvancedSearch">
+            <div class="container-md py-5">
+                <!-- Display title of section on page -->
+                <div class="row justify-content-center">
+                    <h2 class="fw-bold px-3">Advanced Search</h2>
+                    <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
+                </div>
 
-            <h4 style="width: 800; background-color: #6666ff; color: white; margin-bottom: 3px">&nbspSearch Results</h4>
-            <p><span id="results"></span></p>
-        </div>
+                <form action="search.html" method="GET">
+                    <div class="row fw-bold d-flex justify-content-center">
+                        <div class="col-8">
+                            <label for="Search">Game: </label>
+                            <input type="text" id="Game" name="Game">
+                        </div>
+
+                        <div class="col-8">
+                            <label for="Developer">Developer: </label>
+                            <span id="developers"></span>
+                        </div>
+
+                        <div class="col-8">
+                            <label for="Publisher">Publisher: </label>
+                            <span id="publishers"></span>
+                        </div>
+
+                        <div class="col-8">
+                            <label for="Platform">Platform: </label>
+                            <span id="platforms"></span>
+                        </div>
+                        
+                        <div class="col-8">
+                            <label for="Year">Release Year: </label>
+                            <span id="year"></span>
+                        </div>
+
+                        <div class="col-8">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </section>
+
+        <section class="bg-dark text-light py-5" id="SearchResults">
+            <div class="container-md">
+                <!-- Display title of section on page -->
+                <div class="row justify-content-center">
+                    <h2 class="fw-bold px-3">Search Results</h2>
+                    <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
+                    <div class="pb-3"></div>
+                </div>
+            </div>
+
+            <!-- Get and display search results info -->
+            <div style="background-color: #343a40;">
+                <div class="container-md pt-4 pb-3">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-3 mb-2">
+                            <span id="FeaturedGameBoxArt"></span>
+                        </div>
+                        <div class="col-lg-9 px-4 px-lg-2">
+                            <div class="row">
+                                <h2><span id="FeaturedGameName"></span></h2>
+                            </div>
+                            <div class="row">
+                                <p><span id="FeaturedGameDescription"></span></p>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-6 Justify-content-start">
+                                    <tag class="fw-bold">Developer: </tag><span id="FeaturedGameDeveloper"></span><br>
+                                    <tag class="fw-bold">Publisher: </tag><span id="FeaturedGamePublisher"></span><br>
+                                    <tag class="fw-bold">Genre: </tag><span id="FeaturedGameGenre"></span><br>
+                                    <tag class="fw-bold">Platform: </tag><span id="FeaturedGamePlatforms"></span><br>
+                                    <tag class="fw-bold">Release Date: </tag><span id="FeaturedGameReleaseDate"></span>
+                                </div>
+                                <div class="col-6 d-flex justify-content-center align-items-center">
+                                    <h1 class="fw-bold" style="transform: scale(2.0,2.0)"><span id="FeaturedGameScore"></span>%</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-md pt-4 pb-3">
+                <div class="row justify-content-center">
+                    <div class="col-lg-9 ps-4 pe-4 pe-lg-2">
+                        <div class="row">
+                            <h2><a href="https://gameratingsapp.com/GamePage.html?id=52">Xenoblade Chronicles</a></h2>
+                        </div>
+                        <div class="row">
+                            <p>Xenoblade Chronicles follows Shulk and his band of friends as they search for answers about the mysterious "Monado" sword and defend their homeland from violent robotic creatures known as the Mechon. The game contains an open world design and strongly emphasizes exploration due to the world's large size. The game was very well received by critics, with many citing it as a great example of innovation and improvement in Japanese role-playing video games.</p>
+                        </div>
+                        <div class="row justify-content-between">
+                            <div class="col-6 Justify-content-start">
+                                <tag class="fw-bold">Developer: </tag>Monolith Soft<br>
+                                <tag class="fw-bold">Publisher: </tag>Nintendo<br>
+                                <tag class="fw-bold">Genre: </tag>Action, RPG<br>
+                                <tag class="fw-bold">Platform: </tag>Wii<br>
+                                <tag class="fw-bold">Release Date: </tag>2012-04-06
+                            </div>
+                            <div class="col-6 d-flex justify-content-center align-items-center">
+                                <h1 class="fw-bold" style="transform: scale(2.0,2.0)">98.30%</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-2">
+                        <a href="https://gameratingsapp.com/GamePage.html?id=52"><img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2609.png" class="img-fluid d-block m-auto"></a>
+                    </div>
+                </div>
+            </div>
+
+                <p><span id="results"></span></p>
+        </section>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>
