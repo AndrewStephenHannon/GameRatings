@@ -1,12 +1,3 @@
-/* class to hide an object when needed */
-.hideObj {
-    display: none;
-}
-
-.textShadow {
-    text-shadow: 0px 0px 10px black;
-}
-
 /* set unordered list properties for horizontal accordion effect */
 ul {
     list-style: none;
@@ -36,7 +27,7 @@ ul {
 
     /* set the background to have a translucent layer of black over it so that elements stand out overtop of it */
     label:nth-child(1) > li {
-        background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar2x2m.webp") center no-repeat;
+        background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0,0,0,0.8)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar2x2m.webp") center no-repeat;
         background-size: cover;
     }
 
@@ -98,7 +89,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #firstGame:checked ~ ul > label:nth-child(1) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar2x2m.webp") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar2x2m.webp") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 
@@ -115,7 +106,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #secondGame:checked ~ ul > label:nth-child(2) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/scn95t.webp") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/scn95t.webp") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 
@@ -132,7 +123,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #thirdGame:checked ~ ul > label:nth-child(3) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar6yk.webp") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar6yk.webp") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 
@@ -149,7 +140,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #fourthGame:checked ~ ul > label:nth-child(4) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://cdn.mos.cms.futurecdn.net/tCyXJQLBdRCKmnVzRtCzrK.jpg") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://cdn.mos.cms.futurecdn.net/tCyXJQLBdRCKmnVzRtCzrK.jpg") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 
@@ -166,7 +157,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #fifthGame:checked ~ ul > label:nth-child(5) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar1qdh.webp") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar1qdh.webp") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 
@@ -183,7 +174,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #sixthGame:checked ~ ul > label:nth-child(6) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar1p22.webp") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar1p22.webp") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 
@@ -200,7 +191,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #seventhGame:checked ~ ul > label:nth-child(7) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/scahj4.webp") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/scahj4.webp") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 
@@ -217,7 +208,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #eightGame:checked ~ ul > label:nth-child(8) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/azggu2kvyjcwht3kmdmn.webp") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/azggu2kvyjcwht3kmdmn.webp") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 
@@ -234,7 +225,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #ninthGame:checked ~ ul > label:nth-child(9) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar1p1y.webp") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/ar1p1y.webp") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 
@@ -251,7 +242,7 @@ ul {
 /* get element with #id and if it is a checkmark input that is checked, get any sibling that is an unordered list and it's first label child to adjsut it's settings*/
 #tenthGame:checked ~ ul > label:nth-child(10) > li {
     width: 46%; /* widen the element to show body of accordion item */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/scixkh.webp") center no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.8), 50%, rgba(0,0,0,0.5)), url("https://images.igdb.com/igdb/image/upload/t_720p/scixkh.webp") center no-repeat;
     background-size: cover;
     transition: width 0.5s; /* widen with transition of 0.5s */
 

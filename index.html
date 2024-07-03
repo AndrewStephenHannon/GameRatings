@@ -5,6 +5,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="horizontal_accordion.css" type="text/css">
+        <link rel="stylesheet" href="page_styling.css" type="text/css">
         <script src="js-db-functions.js"></script> <!-- reference to JavaScript file with all JavaScripts written for website -->
         <title>Game Ratings</title>
     </head>
@@ -62,17 +63,21 @@
                 <ul>
                     <label class="d-block" for="firstGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName1"></span></h2>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName1"></span></h2>
                             <div class="container-fluid">
-                                <div class="row my-2">
-                                    <h2 class="text-center textShadow" style="font-size: 3vw"><span class="GameName1"></span></h2>
-                                </div>
-                                <div class="row my-2">
-                                    <div class="col-xl-5 py-2">
-                                        <span id="Game1BoxArt"></span>
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink1"></span>
+                                        </div>
                                     </div>
-                                    <div class="col-xl-7 py-2 d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold textShadow" style="font-size: 6vmax"><span id="Game1Score"></span>%</h1>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink1"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription1"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -80,17 +85,21 @@
                     </label>
                     <label class="d-block" for="secondGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName2"></span></h2>
-                            <div class="col-lg-3">
-                                <span id="Game2BoxArt"></span>
-                            </div>
-                            <div class="col-lg-9 px-2">
-                                <div class="row">
-                                    <h2 class="text-center"><span class="GameName2"></span></h2>
-                                </div>
-                                <div class="row justify-content-between">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold"><span id="Game2Score"></span>%</h1>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName2"></span></h2>
+                            <div class="container-fluid">
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink2"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription2"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -98,17 +107,21 @@
                     </label>
                     <label class="d-block" for="thirdGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName3"></span></h2>
-                            <div class="col-lg-3">
-                                <span id="Game3BoxArt"></span>
-                            </div>
-                            <div class="col-lg-9 px-2">
-                                <div class="row">
-                                    <h2 class="text-center"><span class="GameName3"></span></h2>
-                                </div>
-                                <div class="row justify-content-between">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold"><span id="Game3Score"></span>%</h1>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName3"></span></h2>
+                            <div class="container-fluid">
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink3"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink3"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription3"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -116,17 +129,21 @@
                     </label>
                     <label class="d-block" for="fourthGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName4"></span></h2>
-                            <div class="col-lg-3">
-                                <span id="Game4BoxArt"></span>
-                            </div>
-                            <div class="col-lg-9 px-2">
-                                <div class="row">
-                                    <h2 class="text-center"><span class="GameName4"></span></h2>
-                                </div>
-                                <div class="row justify-content-between">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold"><span id="Game4Score"></span>%</h1>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName4"></span></h2>
+                            <div class="container-fluid">
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink4"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink4"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription4"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -134,17 +151,21 @@
                     </label>
                     <label class="d-block" for="fifthGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName5"></span></h2>
-                            <div class="col-lg-3">
-                                <span id="Game5BoxArt"></span>
-                            </div>
-                            <div class="col-lg-9 px-2">
-                                <div class="row">
-                                    <h2 class="text-center"><span class="GameName5"></span></h2>
-                                </div>
-                                <div class="row justify-content-between">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold"><span id="Game5Score"></span>%</h1>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName5"></span></h2>
+                            <div class="container-fluid">
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink5"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink5"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription5"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -152,17 +173,21 @@
                     </label>
                     <label class="d-block" for="sixthGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName6"></span></h2>
-                            <div class="col-lg-3">
-                                <span id="Game6BoxArt"></span>
-                            </div>
-                            <div class="col-lg-9 px-2">
-                                <div class="row">
-                                    <h2 class="text-center"><span class="GameName6"></span></h2>
-                                </div>
-                                <div class="row justify-content-between">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold"><span id="Game6Score"></span>%</h1>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName6"></span></h2>
+                            <div class="container-fluid">
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink6"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink6"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription6"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -170,17 +195,21 @@
                     </label>
                     <label class="d-block" for="seventhGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName7"></span></h2>
-                            <div class="col-lg-3">
-                                <span id="Game7BoxArt"></span>
-                            </div>
-                            <div class="col-lg-9 px-2">
-                                <div class="row">
-                                    <h2 class="text-center"><span class="GameName7"></span></h2>
-                                </div>
-                                <div class="row justify-content-between">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold"><span id="Game7Score"></span>%</h1>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName7"></span></h2>
+                            <div class="container-fluid">
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink7"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink7"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription7"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -188,17 +217,21 @@
                     </label>
                     <label class="d-block" for="eightGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName8"></span></h2>
-                            <div class="col-lg-3">
-                                <span id="Game8BoxArt"></span>
-                            </div>
-                            <div class="col-lg-9 px-2">
-                                <div class="row">
-                                    <h2 class="text-center"><span class="GameName8"></span></h2>
-                                </div>
-                                <div class="row justify-content-between">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold"><span id="Game8Score"></span>%</h1>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName8"></span></h2>
+                            <div class="container-fluid">
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink8"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink8"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription8"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -206,17 +239,21 @@
                     </label>
                     <label class="d-block" for="ninthGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName9"></span></h2>
-                            <div class="col-lg-3">
-                                <span id="Game9BoxArt"></span>
-                            </div>
-                            <div class="col-lg-9 px-2">
-                                <div class="row">
-                                    <h2 class="text-center"><span class="GameName9"></span></h2>
-                                </div>
-                                <div class="row justify-content-between">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold"><span id="Game9Score"></span>%</h1>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName9"></span></h2>
+                            <div class="container-fluid">
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink9"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink9"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription9"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -224,18 +261,23 @@
                     </label>
                     <label class="d-block" for="tenthGame">
                         <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2><span class="GameName10"></span></h2>
-                            <div class="col-lg-3">
-                                <span id="Game10BoxArt"></span>
-                            </div>
-                            <div class="col-lg-9 px-2">
-                                <div class="row">
-                                    <h2 class="text-center"><span class="GameName10"></span></h2>
-                                </div>
-                                <div class="row justify-content-between">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h1 class="fw-bold"><span id="Game10Score"></span>%</h1>
+                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName10"></span></h2>
+                            <div class="container-fluid">
+                                <div class="row mt-2 mx-2 align-items-center">
+                                    <div class="col-xl-5 py-2 d-flex justify-content-center">
+                                        <div class="container-imgtext border border-white">
+                                            <span id="boxScoreLink10"></span>
+                                        </div>
                                     </div>
+                                    <div class="col-xl-7 d-flex justify-content-center align-items-center d-none d-xl-block">
+                                        <div class="row">
+                                            <span id="GameNameLink10"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span id="GameDescription10"></span>
+                                        </div>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </li>
@@ -267,7 +309,6 @@
                         </div>
                         <div class="row">
                             <p><span id="FeaturedGameDescription"></span></p>
-                            
                         </div>
                         <div class="row justify-content-between">
                             <div class="col-6 Justify-content-start">
@@ -286,7 +327,6 @@
 
             </div>
         </section>
-        
 
         <!-- Most Recent Releases Section -->
         <section class="py-5 " id="RecentReleases">
@@ -300,7 +340,6 @@
 
                 <div class="row my-3 justify-content-center g-0"> <!-- align-items-center (vertical alignment), justify-content-center (horizontal alignment) -->
                     <!-- g-0 means no gap betwee ncolumn elements (removes gap) -->
-
 
                     <div class="col-8 col-lg-3">
                         <div class="card bg-dark border-2">
@@ -355,9 +394,9 @@
 
                     <div class="row justify-content-center">
                         <div class="text-center">
-                            <p>Experiencing any issues or have a question? Let us know!</p>
+                            <p>Have a question or experiencing issues?</p>
                             <button class="btn btn-light fw-bold" data-bs-toggle="modal" data-bs-target="#query-form">
-                                Send Questions/Comments
+                                Let us know!
                             </button>
                         </div>
                     </div>
