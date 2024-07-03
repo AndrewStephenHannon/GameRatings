@@ -11,13 +11,39 @@ function showMostPopular() {
             //loop through each game in the Most Popular results
             for(var i=0; i<mostPopular.length; i++) {
                 var index = i+1;
-                var gameNameFields = document.getElementsByClassName("GameName" + index);   //get the current game's name tags to be filled
-                for (var j=0; j<gameNameFields.length; j++) {
-                    gameNameFields[j].innerHTML = mostPopular[i]['Game Name'];  //fill in html with current game's Name
-                }
 
-                document.getElementById("Game" + index + "BoxArt").innerHTML =  "<img src=\"" + mostPopular[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\">"; //fill in html with current game's box art
-                document.getElementById("Game" + index + "Score").innerHTML = mostPopular[i]['CurrentScore'].toFixed(2); //fill in html with current game's aggregated score to two decimal places
+                /******** Game Titles ********/
+                document.getElementById("GameName" + index).innerHTML = mostPopular[i]['Game Name'];  //set vertical, closed accordion Game Name to name of current game in results
+                //Set body of expanded accordion Game Name to current game from results
+                var gameNameLink1 = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + mostPopular[i]['GameID'] + "\" class=\"ignore-link-format\"><h4 class=\"fw-bold textShadow\">" + mostPopular[i]['Game Name'] + "</h4></a>";
+                document.getElementById("GameNameLink" + index).innerHTML = gameNameLink1;
+                /*****************************/
+
+                /******** Description and link ********/
+                 //get game description and link to game page formatted as desired in html
+                var descriptionLink = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + mostPopular[i]['GameID'] + "\" class=\"ignore-link-format\"><p class=\"textShadow\">";
+                descriptionLink += mostPopular[i]['Description'] + "</p></a>";
+                document.getElementById("GameDescription" + index).innerHTML = descriptionLink;   //fill in html with current game's description
+                /**************************************/
+
+                /******** Boxart, Score and link ********/
+                var boxScoreLink = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + mostPopular[i]['GameID'] + "\" class=\"ignore-link-format\">"; //set the box art and score to have link to current game's game page
+                boxScoreLink += "<img src=\"" + mostPopular[i]['BoxArt'] + "\" class=\"img-fluid\">";  //set current game's box art
+                boxScoreLink += "<div class=\"fitted-bar\" "; //set background bar for score
+
+                //depending on the games current aggregated score, determine the background colour accordingly
+                if(mostPopular[i]['CurrentScore'] >= 75.0)
+                    boxScoreLink += "style=\"background: rgba(0, 190, 0, 1);\">";
+                else if(mostPopular[i]['CurrentScore'] >= 60.0)
+                    boxScoreLink += "style=\"background: rgba(255, 255, 0, 1);\">";
+                else
+                    boxScoreLink += "style=\"background: rgba(255, 0, 0, 1);\">";
+
+                //style text of Current Score to be at bottom of parenting div and centered with a text shadow
+                boxScoreLink += "<span class=\"text-center fw-bold textShadow bottom-centered\" style=\"font-size: 1.5em;\">" + mostPopular[i]['CurrentScore'].toFixed(2) + "%</span>";
+                boxScoreLink += "</div></a>"
+                document.getElementById("boxScoreLink" + index).innerHTML = boxScoreLink; //inject html with current game's page link, box art, and aggregated score to two decimal places with html formatting
+                /****************************************/
             }
         }
     }
@@ -56,8 +82,10 @@ function getFeaturedGame(numTotalGames) {
         if(this.readyState == 4 && this.status == 200) {
             const gameData = JSON.parse(this.responseText);
 
-            document.getElementById("FeaturedGameBoxArt").innerHTML = "<img src=\"" + gameData['BoxArt'] + "\" class=\"img-fluid d-block m-auto\">";
-            document.getElementById("FeaturedGameName").innerHTML = gameData['Game Name'];
+            //set the box art for the Featured Game with link to the game's page
+            document.getElementById("FeaturedGameBoxArt").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameID'] + "\"><img src=\"" + gameData['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>";
+            //set the Game Title, Description, Developer, Publisher, and genre
+            document.getElementById("FeaturedGameName").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameID'] + "\">" + gameData['Game Name'] + "</a>";
             document.getElementById("FeaturedGameDescription").innerHTML = gameData['Description'];
             document.getElementById("FeaturedGameDeveloper").innerHTML = gameData['Developer Name'];
             document.getElementById("FeaturedGamePublisher").innerHTML = gameData['Publisher Name'];
@@ -112,7 +140,7 @@ function mostRecentReleases() {
                 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                 document.getElementById("RecentReleaseDate" + index).innerHTML = months[parseInt(releaseDate[1]-1)] + " " + releaseDate[2] + ", " + releaseDate[0];
 
-                document.getElementById("RecentReleaseBoxArt" + index).innerHTML = "<img  class=\"img-fluid rounded\" src=\"" + mostRecentReleases[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\">";
+                document.getElementById("RecentReleaseBoxArt" + index).innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + mostRecentReleases[i]['GameID'] + "\"><img  class=\"img-fluid rounded\" src=\"" + mostRecentReleases[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>";
             }
         }               
     }
