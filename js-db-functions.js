@@ -51,24 +51,8 @@ function showMostPopular() {
     xmlhttpMostPopular.send();
 }
 
-//call to GetTotalGames.php to get total number of games currently in database and pass to getFeaturedGame function
-function getTotalNumGames() {
-    var xmlhttpTotalNumGames = new XMLHttpRequest();
-    var numTotalGames = 0;
-    
-    xmlhttpTotalNumGames.onreadystatechange = function() {
-        if(this.readyState == 4 && this.status == 200)  {
-            numTotalGames = Number(this.responseText);
-
-            getFeaturedGame(numTotalGames); //send result to getFeaturedGames to use in calculating current featured game of the day
-        }
-    }
-    xmlhttpTotalNumGames.open("GET", "GetTotalGames.php", true);
-    xmlhttpTotalNumGames.send();
-}
-
 //Call to GameData.php to get all the necessary game data for the featured game and populates the data in the Featured Game section
-function getFeaturedGame(numTotalGames) {
+async function getFeaturedGame() {
     var xmlhttpFeaturedGame = new XMLHttpRequest();
 
     //Get featured gameID based on the current date
@@ -76,7 +60,7 @@ function getFeaturedGame(numTotalGames) {
     const firstDate = new Date(1900,1,1);   //get a starting date to start counting days from
     const secondDate = new Date();          //get current date
     //get the difference between dates in number of days and get the modular of result using total number of games in the database to obtain gameID
-    var gameID = Math.floor((secondDate - firstDate) / oneDay) % numTotalGames;
+    var gameID = Math.floor((secondDate - firstDate) / oneDay) % await getTotalNumGames();
         
     xmlhttpFeaturedGame.onreadystatechange = async function() {
         if(this.readyState == 4 && this.status == 200) {
@@ -108,6 +92,24 @@ function getFeaturedGame(numTotalGames) {
     xmlhttpFeaturedGame.send();
 }
 
+//call to GetTotalGames.php to get total number of games currently in database
+function getTotalNumGames() {
+    return new Promise((resolve) => {
+        var xmlhttpTotalNumGames = new XMLHttpRequest();
+        var numTotalGames = 0;
+        
+        xmlhttpTotalNumGames.onreadystatechange = function() {
+            if(this.readyState == 4 && this.status == 200)  {
+                numTotalGames = Number(this.responseText);
+
+                resolve(numTotalGames); //return result
+            }
+        }
+        xmlhttpTotalNumGames.open("GET", "GetTotalGames.php", true);
+        xmlhttpTotalNumGames.send();
+    });
+}
+
 //Call to PlatformsData.php to obtain the platforms the game is on given the gameID and populates the platforms field of the featured fame section
 function getPlatformData(gameID) {
     return new Promise((resolve) => {
@@ -118,7 +120,7 @@ function getPlatformData(gameID) {
                 resolve(this.responseText);
             }
         };
-        xmlhttpPlatforms.open("GET", "PlatformsData.php?q=" + gameID, false);
+        xmlhttpPlatforms.open("GET", "PlatformsData.php?q=" + gameID, true);
         xmlhttpPlatforms.send();
     });
 }
