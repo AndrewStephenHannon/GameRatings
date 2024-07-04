@@ -1,4 +1,5 @@
-﻿<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +12,13 @@
     </head>
 
     <!-- load in JavaScript functions -->
-    <body class="bg-secondary d-flex flex-column" onLoad="showMostPopular(); mostRecentReleases(); getTotalNumGames()">
+    <body class="bg-secondary d-flex flex-column" onLoad="showMostPopular(); mostRecentReleases(); getFeaturedGame()">
         <!-- Navbar with Site Icon, Title and Search bar -->
         <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
-        <nav class="navbar navbar-expand-md top navbar-dark bg-dark p-1">
+        <nav class="navbar navbar-expand-md top navbar-dark bg-dark px-1">
             <div class="container-xxl"> <!-- use xxl container to keep icon/title and search bar/button no further than a certain distance from each other in case viewed on extremely large screens  -->
                 <!-- set the icon for the website and the title (current doesn't link to anything, but will be homepage button)-->
-                <a href="#" class="navbar-brand">
+                <a href="https://gameratingsapp.com/" class="navbar-brand">
                     <span class="fw-bold text-white h1">
                         <i class="bi bi-joystick"></i>
                         Game Ratings
@@ -31,7 +32,7 @@
 
                 <!-- Search bar and submit button for searching games on site. Enclosed in div that hides the search bar and button behind the above navbar toggler button on smaller screen sizes -->
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSearchField">
-                    <form  action="search.html" class="d-flex pt-3" role="search">
+                    <form  action="search.html" class="d-flex" role="search">
                         <input type="search" id="Game" name="Game" class="form-control me-2" placeholder="Search...">
 
                         <!-- hidden search fields to feed search filters once search button is clicked -->
@@ -62,8 +63,8 @@
                 <input class="hideObj" type="radio" name="mostPopular" id="tenthGame">
                 <ul>
                     <label class="d-block" for="firstGame">
-                        <li class="d-flex text-white justify-content-center align-items-center">
-                            <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName1"></span></h2>
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG1">
+                            <h2 class="textShadow" style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName1"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
                                     <div class="col-xl-5 py-2 d-flex justify-content-center">
@@ -333,12 +334,12 @@
             <div class="container-md">
             
                 <!-- Display title of section on page -->
-                    <div class="row justify-content-center">
-                        <h2 class="fw-bold px-3">Recent Releases</h2>
-                        <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
-                    </div>
+                <div class="row justify-content-center">
+                    <h2 class="fw-bold px-3">Recent Releases</h2>
+                    <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
+                </div>
 
-                <div class="row my-3 justify-content-center g-0"> <!-- align-items-center (vertical alignment), justify-content-center (horizontal alignment) -->
+                <div class="row my-3 justify-content-center g-0">
                     <!-- g-0 means no gap betwee ncolumn elements (removes gap) -->
 
                     <div class="col-8 col-lg-3">
@@ -404,7 +405,7 @@
             </div>
         </section>
 
-        <!-- Modal object for Contact Us button -->
+        <!-- Modal element for Contact Us button -->
         <div class="modal fade" id="query-form" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -430,7 +431,7 @@
                             <input type="text" class="form-control" id="name" placeholder="John Smith">
                         </div>
 
-                        <label for="Query" class="form-label">Question/Comment:</label>
+                        <label for="query" class="form-label">Question/Comment:</label>
                         <div class="mb-2">
                             <textarea name="query" id="query" class="form-control" style="height: 160px" placeholder="Write here..."></textarea>
                         </div>
@@ -443,7 +444,7 @@
             </div>
         </div>
 
-        <!-- Modal object for Contact Submit button -->
+        <!-- Modal element for Contact Submit button -->
         <div class="modal fade" id="query-submitted" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

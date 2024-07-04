@@ -39,7 +39,7 @@
 
         //if count is greater than 0, then get average of review scores
         if($count > 0)
-                $average = number_format((float)($total / $count), 2, '.', '');
+            $average = number_format((float)($total / $count), 2, '.', '');
 
         //if an average was obtained, update the game's average in the database to ensure the aggregated score is up to date
         if($average != "N/A") {

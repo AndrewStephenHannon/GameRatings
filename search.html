@@ -1,116 +1,120 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <title>Search Page</title>
-        <link href="PageStyling.css" rel="stylesheet" type="text/css">
-        <h1 style="width: 800px; height: 100px; margin: auto; display: flex; align-items: center; text-align: center; background-color: #6666ff"><a style="margin: auto 10px; color: white; font-size: 50px; text-decoration: none;" href="https://gameratingsapp.com/">  Games Ratings</a></h1>
-        <br>
-        <hr style="width: 800px; margin: auto;">
-        <br>
-        <script>
-            function populateDevDropdown() {
-                var xmlhttpDevDropdown = new XMLHttpRequest();
-
-                xmlhttpDevDropdown.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("developers").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpDevDropdown.open("GET", "AllDevs.php", false);
-                xmlhttpDevDropdown.send();
-            }
-
-            function populatePubDropdown() {
-                var xmlhttpPubDropdown = new XMLHttpRequest();
-
-                xmlhttpPubDropdown.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("publishers").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpPubDropdown.open("GET", "AllPubs.php", false);
-                xmlhttpPubDropdown.send();
-            }
-
-            function populatePlatforms() {
-                var xmlhttpPlatformDropdown = new XMLHttpRequest();
-
-                xmlhttpPlatformDropdown.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("platforms").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpPlatformDropdown.open("GET", "AllPlatforms.php", false);
-                xmlhttpPlatformDropdown.send();
-            }
-
-            function populateYears() {
-                var year = new Date().getFullYear();
-                var html = "<select id=\"Year\" name=\"Year\">";
-                    html += "<option value=\"\"></option>"
-
-                while(year >= 1950) {
-                    html += "<option value=" + year + ">" + year + "</option>";
-                    year = year - 1;
-                }
-
-                html += "</select>";
-
-                document.getElementById("year").innerHTML = html;
-            }
-
-            function showResults() {
-                var xmlhttpGameResults = new XMLHttpRequest();
-                var strings = window.location.search.split("=");
-
-                var game = new window.URL(location.href).searchParams.get('Game');
-                var dev = new window.URL(location.href).searchParams.get('Developer');
-                var pub = new window.URL(location.href).searchParams.get('Publisher');
-                var platform = new window.URL(location.href).searchParams.get('Platform');
-                var year = new window.URL(location.href).searchParams.get('Year');
-
-                xmlhttpGameResults.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("results").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpGameResults.open("GET", "search.php?Game=" + game + "&Developer=" + dev + "&Publisher=" 
-                                        + pub + "&Platform=" + platform + "&Year=" + year, false);
-                xmlhttpGameResults.send();
-            }
-        </script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="page_styling.css" type="text/css">
+        <script src="js-db-functions.js"></script> <!-- reference to JavaScript file with all JavaScripts written for website -->
+        <title>Game Ratings</title>
     </head>
 
-    <body onLoad="populateDevDropdown(); populatePubDropdown(); populatePlatforms(); populateYears(); showResults();">
-        <div style="width: 800px; margin: auto;">
-            <form action="search.html" method="GET">
-                <span id="test"></span>
-                <label for="Search">Game: </label>
-                <input type="text" id="Game" name="Game">
+    <!-- load in JavaScript functions -->
+    <body class="bg-secondary d-flex flex-column" onLoad="populateDevDropdown(); populatePubDropdown(); populatePlatforms(); populateYears(); showResults();">
+        <!-- Navbar with Site Icon, Title and Search bar -->
+        <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
+        <nav class="navbar navbar-expand-md top navbar-dark bg-dark px-1">
+            <div class="container-xxl"> <!-- use xxl container to keep icon/title and search bar/button no further than a certain distance from each other in case viewed on extremely large screens  -->
+                <!-- set the icon for the website and the title (current doesn't link to anything, but will be homepage button)-->
+                <a href="https://gameratingsapp.com/" class="navbar-brand">
+                    <span class="fw-bold text-white h1">
+                        <i class="bi bi-joystick"></i>
+                        Game Ratings
+                    </span>
+                </a>
 
-                <label for="Developer">Developer: </label>
-                <span id="developers"></span>
-                <br><br>
+                <!-- nav button that appears on smaller screens such as mobile/phone screens -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearchField">
+                    <i class="bi bi-search"></i> <!-- collapsed navbar icon -->
+                </button>
 
-                <label for="Publisher">Publisher: </label>
-                <span id="publishers"></span>
+                <!-- Search bar and submit button for searching games on site. Enclosed in div that hides the search bar and button behind the above navbar toggler button on smaller screen sizes -->
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSearchField">
+                    <form  action="search.html" class="d-flex" role="search">
+                        <input type="search" id="Game" name="Game" class="form-control me-2" placeholder="Search...">
 
-                <label for="Platform">Platform: </label>
-                <span id="platforms"></span>
-                <br><br>
+                        <!-- hidden search fields to feed search filters once search button is clicked -->
+                        <input type="hidden" id="Dev" name="Developer">
+                        <input type="hidden" id="Pub" name="Publisher">
+                        <input type="hidden" id="Platform" name="Platform">
+                        <input type="hidden" id="Year" name="Year">
 
-                <label for="Year">Release Year: </label>
-                <span id="year"></span>
+                        <!-- search button -->
+                        <button class="btn btn-outline-light fw-bold" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
 
-                <input type="submit" value="Submit">
-                <br>
-                <hr>
-            </form>
+        <!-- Advanced Search -->
+        <div class="offcanvas offcanvas-top bg-secondary" tabindex="-1" id="AdvancedSearch" aria-labelledby="sidebar-label">
+            <div class="container-md pt-3 pb-4">
+                <!-- Display title of section on page -->
+                <div class="offcanvas-header pb-1">
+                    <h2 class="fw-bold px-3">Advanced Search</h2>
+                    <button type="button" class="btn-close pe-5" data-bs-dismiss="offcanvas"></button>
+                </div>
 
-            <h4 style="width: 800; background-color: #6666ff; color: white; margin-bottom: 3px">&nbspSearch Results</h4>
-            <p><span id="results"></span></p>
+                <div class="offcanvas-body pt-0">
+                    <form action="search.html" method="GET">
+                        <div class="row">
+                            <div class="input-group d-flex justify-content-between">
+                                <div class="col-9 p-1">
+                                    <input type="text" class="form-control" id="Game" name="Game" placeholder="Game">
+                                </div>
+
+                                <div class="col-3 p-1">
+                                    <span id="platforms"></span>
+                                </div>
+
+                                <div class="col-4 p-1">
+                                    <span id="developers"></span>
+                                </div>
+
+                                <div class="col-4 p-1">
+                                    <span id="publishers"></span>
+                                </div>
+                                
+                                <div class="col-4 p-1">
+                                    <span id="year"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+
+                                <div class="col-2 p-1">
+                                    <input class="btn btn-light col-12 fw-bold" type="submit" value="Submit">
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
         </div>
+
+        <section class="bg-dark text-light" id="SearchResults">
+            <div style="background-color: #343a40;">
+                <div class="container-md pt-4">
+                    <!-- Display title of section on page -->
+                    <div class="row">
+                        <div class="d-flex justify-content-between">
+                            <h2 class="fw-bold px-3">Search Results</h2>
+                            <a class="fw-bold" href="#AdvancedSearch" data-bs-toggle="offcanvas" role="button">Advanced Search</a>
+                        </div>
+                        <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
+                        <div class="pb-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Get and display search results info -->
+            <p><span id="results"></span></p>
+            
+        </section>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>
 </html>
