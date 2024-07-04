@@ -12,6 +12,11 @@ function showMostPopular() {
             for(var i=0; i<mostPopular.length; i++) {
                 var index = i+1;
 
+                /******** Game Backgrounds ********/
+                document.getElementById("GameBG" + index).style.background = "linear-gradient(rgba(0, 0, 0, 0.8), rgba(0,0,0,0.5)), url('https://images.igdb.com/igdb/image/upload/t_720p/ar2x2m.webp') center no-repeat";
+                document.getElementById("GameBG" + index).style.backgroundSize =  "cover";
+                /**********************************/
+
                 /******** Game Titles ********/
                 document.getElementById("GameName" + index).innerHTML = mostPopular[i]['Game Name'];  //set vertical, closed accordion Game Name to name of current game in results
                 //Set body of expanded accordion Game Name to current game from results
