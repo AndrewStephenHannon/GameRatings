@@ -1,4 +1,5 @@
-﻿<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,7 @@
     </head>
 
     <!-- load in JavaScript functions -->
-    <body class="bg-secondary d-flex flex-column" onLoad="showMostPopular(); mostRecentReleases(); getTotalNumGames()">
+    <body class="bg-secondary d-flex flex-column" onLoad="showMostPopular(); mostRecentReleases(); getFeaturedGame()">
         <!-- Navbar with Site Icon, Title and Search bar -->
         <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
         <nav class="navbar navbar-expand-md top navbar-dark bg-dark p-1">
@@ -430,7 +431,7 @@
                             <input type="text" class="form-control" id="name" placeholder="John Smith">
                         </div>
 
-                        <label for="Query" class="form-label">Question/Comment:</label>
+                        <label for="query" class="form-label">Question/Comment:</label>
                         <div class="mb-2">
                             <textarea name="query" id="query" class="form-control" style="height: 160px" placeholder="Write here..."></textarea>
                         </div>
