@@ -43,7 +43,7 @@
         die(print_r(sqlsrv_errors(), true));
     }
 
-    echo substr($response, 0, -2); //return the result of the SQL query with html formatting removing the last space and comma created when building the string of platfortms
+    echo substr($response, 0, -2); //return the result of the SQL query removing the last space and comma created when building the string of platfortms
 
     sqlsrv_close($connection); //close the connection to the database
 ?>
