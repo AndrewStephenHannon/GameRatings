@@ -21,8 +21,8 @@
     $sqlquery = "SELECT * FROM PublisherPage";
     $result = sqlsrv_query($connection, $sqlquery);
 
-    $response = "<select id=\"Pub\" name=\"Publisher\">";
-    $response .= "<option value=\"\"></option>";
+    $response = "<select class=\"form-select\" id=\"Pub\" name=\"Publisher\">";
+    $response .= "<option value=\"\">- Select Publisher -</option>";
 
     //if the SQL query gets data, read through the data, get publisher name and format it for the html page
     //if SQL fails, print out the error
