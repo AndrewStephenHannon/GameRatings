@@ -78,7 +78,7 @@ function getFeaturedGame(numTotalGames) {
     //get the difference between dates in number of days and get the modular of result using total number of games in the database to obtain gameID
     var gameID = Math.floor((secondDate - firstDate) / oneDay) % numTotalGames;
         
-    xmlhttpFeaturedGame.onreadystatechange = function() {
+    xmlhttpFeaturedGame.onreadystatechange = async function() {
         if(this.readyState == 4 && this.status == 200) {
             const gameData = JSON.parse(this.responseText);
 
@@ -98,8 +98,9 @@ function getFeaturedGame(numTotalGames) {
             document.getElementById("FeaturedGameReleaseDate").innerHTML = releaseDate[1];
 
             //Get the platform data for the featured game
-            getPlatformData(gameID);
+            document.getElementById("FeaturedGamePlatforms").innerHTML = await getPlatformData(gameID);
 
+            //Get current Score of game to two decimal places
             document.getElementById("FeaturedGameScore").innerHTML = gameData['CurrentScore'].toFixed(2);
         }               
     }
@@ -109,15 +110,17 @@ function getFeaturedGame(numTotalGames) {
 
 //Call to PlatformsData.php to obtain the platforms the game is on given the gameID and populates the platforms field of the featured fame section
 function getPlatformData(gameID) {
-    var xmlhttpPlatforms = new XMLHttpRequest();
+    return new Promise((resolve) => {
+        var xmlhttpPlatforms = new XMLHttpRequest();
 
-    xmlhttpPlatforms.onreadystatechange = function() {
-        if(this.readyState == 4 && this.status == 200) {
-            document.getElementById("FeaturedGamePlatforms").innerHTML = this.responseText;
-        }
-    };
-    xmlhttpPlatforms.open("GET", "PlatformsData.php?q=" + gameID, false);
-    xmlhttpPlatforms.send();
+        xmlhttpPlatforms.onreadystatechange = function() {
+            if(this.readyState == 4 && this.status == 200) {
+                resolve(this.responseText);
+            }
+        };
+        xmlhttpPlatforms.open("GET", "PlatformsData.php?q=" + gameID, false);
+        xmlhttpPlatforms.send();
+    });
 }
 
 //Call to MostRecentRelease.php to obtain list of the most recetnly released games in the database and populates the Most Recent Releases section of the homepage with formatted HTML and CSS
@@ -209,9 +212,103 @@ function showResults() {
     var platform = new window.URL(location.href).searchParams.get('Platform');
     var year = new window.URL(location.href).searchParams.get('Year');
 
-    xmlhttpGameResults.onreadystatechange = function() {
+    xmlhttpGameResults.onreadystatechange = async function() {
         if(this.readyState == 4 && this.status == 200) {
-            document.getElementById("results").innerHTML = this.responseText;
+            const searchResults = JSON.parse(this.responseText);
+
+            var resultsContents = ""
+
+            for(var i=0; i<searchResults.length; i++) {
+                if(i%2 == 0) {
+                    //store html and css/bootstrap styling code for displaying search results
+                    resultsContents += 
+                        "<div style=\"background-color: #343a40;\">" +
+                            "<div class=\"container-md pt-4 pb-3\">" +
+                                "<div class=\"row justify-content-center\">" +
+                                    "<div class=\"col-lg-3 mb-2\">" +
+                                        "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\"><img src=\"" + searchResults[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
+                                    "</div>" +
+                                    "<div class=\"col-lg-9 px-4 px-lg-2\">" +
+                                        "<div class=\"row\">" +
+                                            "<h2>" + "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\">" + searchResults[i]['Game Name'] + "</a>" + "</h2>" +
+                                        "</div>" +
+                                        "<div class=\"row\">" +
+                                            "<p>" + searchResults[i]['Description'] + "</p>" +
+                                        "</div>" +
+                                        "<div class=\"row justify-content-between\">" +
+                                            "<div class=\"col-6 Justify-content-start\">" +
+                                                "<tag class=\"fw-bold\">Developer: </tag>" + searchResults[i]['Developer Name'] + "<br>" +
+                                                "<tag class=\"fw-bold\">Publisher: </tag>" + searchResults[i]['Publisher Name'] + "</span><br>" +
+                                                "<tag class=\"fw-bold\">Genre: </tag>" + searchResults[i]['Genre'] + "</span><br>";
+
+                    //call function for game's platforms and wait for response
+                    var platforms = await getPlatformData(searchResults[i]['GameID']);
+                    resultsContents +=          "<tag class=\"fw-bold\">Platform: </tag>" + platforms + "</span><br>";
+
+
+                    //parse release date in desired format (YYYY-MM-DD)
+                    var parseReleaseDate = JSON.parse(JSON.stringify(searchResults[i]["Release Date NA"]));
+                    var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
+                    releaseDate = releaseDate[0].split("\"");
+
+                    resultsContents += 
+                                                "<tag class=\"fw-bold\">Release Date: </tag>" + releaseDate[1] + "</span>" +
+                                            "</div>" +
+                                            "<div class=\"col-6 d-flex justify-content-center align-items-center\">" +
+                                                "<h1 class=\"fw-bold\" style=\"transform: scale(2.0,2.0)\">" + searchResults[i]['CurrentScore'].toFixed(2) + "</span>%</h1>" +
+                                            "</div>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>";
+
+                } else {
+                    resultsContents +=
+                        "<div class=\"container-md pt-4 pb-3\">" + 
+                            "<div class=\"row justify-content-center\">" +
+                                "<div class=\"col-lg-3 mb-2 d-block d-lg-none\">" +
+                                    "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\"><img src=\"" + searchResults[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
+                                "</div>" +
+                                "<div class=\"col-lg-9 ps-4 pe-4 pe-lg-2\">" +
+                                    "<div class=\"row\">" +
+                                        "<h2><a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\">" + searchResults[i]['Game Name'] + "</a></h2>" +
+                                    "</div>" +
+                                    "<div class=\"row\">" +
+                                        "<p>" + searchResults[i]['Description'] + "</p>" +
+                                    "</div>" +
+                                    "<div class=\"row justify-content-between\">" +
+                                        "<div class=\"col-6 Justify-content-start\">" +
+                                            "<tag class=\"fw-bold\">Developer: </tag>" + searchResults[i]['Developer Name'] + "<br>" +
+                                            "<tag class=\"fw-bold\">Publisher: </tag>" + searchResults[i]['Publisher Name'] + "<br>" +
+                                            "<tag class=\"fw-bold\">Genre: </tag>" + searchResults[i]['Genre'] + "<br>";
+
+                    //call function for game's platforms and wait for response
+                    var platforms = await getPlatformData(searchResults[i]['GameID']);
+                    resultsContents += "<tag class=\"fw-bold\">Platform: </tag>" + platforms + "</span><br>";
+
+                    //parse release date in desired format (YYYY-MM-DD)
+                    var parseReleaseDate = JSON.parse(JSON.stringify(searchResults[i]["Release Date NA"]));
+                    var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
+                    releaseDate = releaseDate[0].split("\"");
+
+                    resultsContents +=
+                                            "<tag class=\"fw-bold\">Release Date: </tag>" + releaseDate[1] + "</span>" +
+                                        "</div>" +
+                                        "<div class=\"col-6 d-flex justify-content-center align-items-center\">" +
+                                            "<h1 class=\"fw-bold\" style=\"transform: scale(2.0,2.0)\">" + searchResults[i]['CurrentScore'].toFixed(2) + "%</h1>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>" +
+                                "<div class=\"col-lg-3 mb-2 d-none d-lg-block\">" +
+                                    "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\"><img src=\"" + searchResults[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>";
+                }
+            }
+
+            document.getElementById("results").innerHTML = resultsContents;
         }
     };
     xmlhttpGameResults.open("GET", "search.php?Game=" + game + "&Developer=" + dev + "&Publisher=" 
