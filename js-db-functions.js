@@ -1,4 +1,4 @@
-//my JavaScript functions for accessing backend database
+//JavaScript functions for accessing backend database
 
 //Call to MostPopular.php for getting the list of 10 most popular games and populating the data in the HTML code
 function showMostPopular() {
@@ -161,7 +161,7 @@ function populateDevDropdown() {
             document.getElementById("developers").innerHTML = this.responseText;
         }
     };
-    xmlhttpDevDropdown.open("GET", "AllDevs.php", false);
+    xmlhttpDevDropdown.open("GET", "AllDevs.php", true);
     xmlhttpDevDropdown.send();
 }
 
@@ -173,7 +173,7 @@ function populatePubDropdown() {
             document.getElementById("publishers").innerHTML = this.responseText;
         }
     };
-    xmlhttpPubDropdown.open("GET", "AllPubs.php", false);
+    xmlhttpPubDropdown.open("GET", "AllPubs.php", true);
     xmlhttpPubDropdown.send();
 }
 
@@ -185,14 +185,14 @@ function populatePlatforms() {
             document.getElementById("platforms").innerHTML = this.responseText;
         }
     };
-    xmlhttpPlatformDropdown.open("GET", "AllPlatforms.php", false);
+    xmlhttpPlatformDropdown.open("GET", "AllPlatforms.php", true);
     xmlhttpPlatformDropdown.send();
 }
 
 function populateYears() {
     var year = new Date().getFullYear();
-    var html = "<select id=\"Year\" name=\"Year\">";
-        html += "<option value=\"\"></option>"
+    var html = "<select class=\"form-select\" id=\"Year\" name=\"Year\">";
+        html += "<option value=\"\">- Release Year -</option>"
 
     while(year >= 1950) {
         html += "<option value=" + year + ">" + year + "</option>";
@@ -302,6 +302,6 @@ function showResults() {
         }
     };
     xmlhttpGameResults.open("GET", "search.php?Game=" + game + "&Developer=" + dev + "&Publisher=" 
-                            + pub + "&Platform=" + platform + "&Year=" + year, false);
+                            + pub + "&Platform=" + platform + "&Year=" + year, true);
     xmlhttpGameResults.send();
 }
