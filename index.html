@@ -15,7 +15,7 @@
     <body class="bg-secondary d-flex flex-column" onLoad="showMostPopular(); mostRecentReleases(); getFeaturedGame()">
         <!-- Navbar with Site Icon, Title and Search bar -->
         <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
-        <nav class="navbar navbar-expand-md top navbar-dark bg-dark px-1">
+        <nav class="navbar navbar-expand-md top navbar-dark bg-dark px-1" style="z-index: 2;">
             <div class="container-xxl"> <!-- use xxl container to keep icon/title and search bar/button no further than a certain distance from each other in case viewed on extremely large screens  -->
                 <!-- set the icon for the website and the title (current doesn't link to anything, but will be homepage button)-->
                 <a href="https://gameratingsapp.com/" class="navbar-brand">
@@ -50,6 +50,15 @@
 
         <!-- Horizontal Accordion for Most Popular section -->
         <section class="bg-secondary " id="MostPopular">
+
+            <div class="container-md">
+            <!-- Display title of section on page -->
+                <div class="row justify-content-center pt-2">
+                    <h2 class="fw-bold px-3">Most Popular</h2>
+                    <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
+                </div>
+            </div>
+
             <div>
                 <input class="hideObj" type="radio" name="mostPopular" id="firstGame"checked=checked >
                 <input class="hideObj" type="radio" name="mostPopular" id="secondGame">
