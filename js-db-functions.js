@@ -13,7 +13,7 @@ function showMostPopular() {
                 var index = i+1;
 
                 /******** Game Backgrounds ********/
-                document.getElementById("GameBG" + index).style.background = "linear-gradient(rgba(0, 0, 0, 0.8), rgba(0,0,0,0.5)), url('https://images.igdb.com/igdb/image/upload/t_720p/ar2x2m.webp') center no-repeat";
+                document.getElementById("GameBG" + index).style.background = "url('" + mostPopular[i]['BannerImage'] + "') center no-repeat";
                 document.getElementById("GameBG" + index).style.backgroundSize =  "cover";
                 /**********************************/
 
