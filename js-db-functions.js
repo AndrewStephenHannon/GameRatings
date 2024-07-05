@@ -41,11 +41,16 @@ function showMostPopular() {
                     boxScoreLink += "style=\"background: rgba(0, 190, 0, 1);\">";
                 else if(mostPopular[i]['CurrentScore'] >= 60.0)
                     boxScoreLink += "style=\"background: rgba(255, 255, 0, 1);\">";
+                else if (mostPopular[i]['CurrentScore'] > 0)
+                    boxScoreLink += "style=\"background: rgba(255, 0, 0, 1);\">"
                 else
-                    boxScoreLink += "style=\"background: rgba(255, 0, 0, 1);\">";
+                    boxScoreLink += "style=\"background: rgba(100, 100, 100, 1);\">";
 
                 //style text of Current Score to be at bottom of parenting div and centered with a text shadow
-                boxScoreLink += "<span class=\"text-center fw-bold textShadow bottom-centered\" style=\"font-size: 1.5em;\">" + mostPopular[i]['CurrentScore'].toFixed(2) + "%</span>";
+                if(mostPopular[i]['CurrentScore'] > 0)
+                    boxScoreLink += "<span class=\"text-center fw-bold textShadow bottom-centered\" style=\"font-size: 1.5em;\">" + mostPopular[i]['CurrentScore'].toFixed(2) + "%</span>";
+                else
+                    boxScoreLink += "<span class=\"text-center fw-bold textShadow bottom-centered\" style=\"font-size: 1.5em;\">N/A</span>";
                 boxScoreLink += "</div></a>"
                 document.getElementById("boxScoreLink" + index).innerHTML = boxScoreLink; //inject html with current game's page link, box art, and aggregated score to two decimal places with html formatting
                 /****************************************/
