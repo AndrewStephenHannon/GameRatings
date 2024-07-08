@@ -24,11 +24,11 @@
                     if(this.readyState == 4 && this.status == 200) {
                         const gameData = JSON.parse(this.responseText);
 
-                        var dateParse = JSON.parse(JSON.stringify(gameData["Release Date NA"]));
+                        var dateParse = JSON.parse(JSON.stringify(gameData["ReleaseDate"]));
                         var date = JSON.stringify(dateParse["date"]).split(" ");
                         date = date[0].split("\"");
 
-                        document.getElementById("Title").innerHTML = gameData["Game Name"];
+                        document.getElementById("Title").innerHTML = gameData["GameName"];
                         document.getElementById("BoxArt").innerHTML = "<img src=\"" + gameData["BoxArt"] + "\" class=\"box-art\">";
                         document.getElementById("Description").innerHTML = gameData["Description"];
                         document.getElementById("ReleaseDate").innerHTML = date[1];

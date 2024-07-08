@@ -21,7 +21,7 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain game's publisher information
-    $sqlquery = "SELECT TOP 1 * FROM PublisherPage WHERE PubID=" . $q;
+    $sqlquery = "SELECT TOP 1 * FROM Publishers WHERE PubID=" . $q;
     $result = sqlsrv_query($connection, $sqlquery); //execute SQL query
 
     $response = "";
@@ -32,7 +32,7 @@
     {
         $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
 
-        $response = $row["Publisher Name"];
+        $response = $row["PublisherName"];
     }
     else
     {

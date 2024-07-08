@@ -18,9 +18,9 @@ function showMostPopular() {
                 /**********************************/
 
                 /******** Game Titles ********/
-                document.getElementById("GameName" + index).innerHTML = mostPopular[i]['Game Name'];  //set vertical, closed accordion Game Name to name of current game in results
+                document.getElementById("GameName" + index).innerHTML = mostPopular[i]['GameName'];  //set vertical, closed accordion Game Name to name of current game in results
                 //Set body of expanded accordion Game Name to current game from results
-                var gameNameLink1 = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + mostPopular[i]['GameID'] + "\" class=\"ignore-link-format\"><h4 class=\"fw-bold textShadow\">" + mostPopular[i]['Game Name'] + "</h4></a>";
+                var gameNameLink1 = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + mostPopular[i]['GameID'] + "\" class=\"ignore-link-format\"><h4 class=\"fw-bold textShadow\">" + mostPopular[i]['GameName'] + "</h4></a>";
                 document.getElementById("GameNameLink" + index).innerHTML = gameNameLink1;
                 /*****************************/
 
@@ -79,14 +79,14 @@ async function getFeaturedGame() {
             //set the box art for the Featured Game with link to the game's page
             document.getElementById("FeaturedGameBoxArt").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameID'] + "\"><img src=\"" + gameData['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>";
             //set the Game Title, Description, Developer, Publisher, and genre
-            document.getElementById("FeaturedGameName").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameID'] + "\">" + gameData['Game Name'] + "</a>";
+            document.getElementById("FeaturedGameName").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameID'] + "\">" + gameData['GameName'] + "</a>";
             document.getElementById("FeaturedGameDescription").innerHTML = gameData['Description'];
-            document.getElementById("FeaturedGameDeveloper").innerHTML = gameData['Developer Name'];
-            document.getElementById("FeaturedGamePublisher").innerHTML = gameData['Publisher Name'];
+            document.getElementById("FeaturedGameDeveloper").innerHTML = gameData['DeveloperName'];
+            document.getElementById("FeaturedGamePublisher").innerHTML = gameData['PublisherName'];
             document.getElementById("FeaturedGameGenre").innerHTML = gameData['Genre'];
 
             //parse release date in desired format (YYYY-MM-DD)
-            var parseReleaseDate = JSON.parse(JSON.stringify(gameData["Release Date NA"]));
+            var parseReleaseDate = JSON.parse(JSON.stringify(gameData["ReleaseDate"]));
             var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
             releaseDate = releaseDate[0].split("\"");
             document.getElementById("FeaturedGameReleaseDate").innerHTML = releaseDate[1];
@@ -149,7 +149,7 @@ function mostRecentReleases() {
                 var index = i+1;
 
                 //parse release date in desired format (YYYY-MM-DD)
-                var parseReleaseDate = JSON.parse(JSON.stringify(mostRecentReleases[i]["Release Date NA"]));
+                var parseReleaseDate = JSON.parse(JSON.stringify(mostRecentReleases[i]["ReleaseDate"]));
                 var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ")[0];
                 releaseDate = releaseDate.substring(1).split("-");
                 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -257,15 +257,15 @@ function showResults() {
 
                 resultsContents +=
                                     "<div class=\"row\">" +
-                                        "<h2><a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\">" + searchResults[i]['Game Name'] + "</a></h2>" +
+                                        "<h2><a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\">" + searchResults[i]['GameName'] + "</a></h2>" +
                                     "</div>" +
                                     "<div class=\"row\">" +
                                         "<p>" + searchResults[i]['Description'] + "</p>" +
                                     "</div>" +
                                     "<div class=\"row justify-content-between\">" +
                                         "<div class=\"col-6 Justify-content-start\">" +
-                                            "<tag class=\"fw-bold\">Developer: </tag>" + searchResults[i]['Developer Name'] + "<br>" +
-                                            "<tag class=\"fw-bold\">Publisher: </tag>" + searchResults[i]['Publisher Name'] + "<br>" +
+                                            "<tag class=\"fw-bold\">Developer: </tag>" + searchResults[i]['DeveloperName'] + "<br>" +
+                                            "<tag class=\"fw-bold\">Publisher: </tag>" + searchResults[i]['PublisherName'] + "<br>" +
                                             "<tag class=\"fw-bold\">Genre: </tag>" + searchResults[i]['Genre'] + "<br>";
 
                 //call function for game's platforms and wait for response
@@ -274,7 +274,7 @@ function showResults() {
 
 
                 //parse release date in desired format (YYYY-MM-DD)
-                var parseReleaseDate = JSON.parse(JSON.stringify(searchResults[i]["Release Date NA"]));
+                var parseReleaseDate = JSON.parse(JSON.stringify(searchResults[i]["ReleaseDate"]));
                 var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
                 releaseDate = releaseDate[0].split("\"");
 

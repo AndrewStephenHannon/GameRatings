@@ -20,13 +20,9 @@
     else
         echo "No connection established<br>";
 
-    //create SQL query to obtain all Game Data (info on game from Game Table joined with the Game's platform
-    //data on the platform table and getting Dev and Pub names from the Developer and Publisher tables)
-    //$sqlquery = "SELECT DeveloperPage.[Developer Name], PublisherPage.[Publisher Name], *
-    //            FROM DeveloperPage, PublisherPage, GamePage INNER JOIN PlatformsTable ON GamePage.GameID = PlatformsTable.GameID 
-    //            WHERE GamePage.GameID=" . $q . " AND GamePage.DevID = DeveloperPage.DevID AND GamePage.PubID = PublisherPage.PubID";
-    $sqlquery = "SELECT DeveloperPage.[Developer Name], PublisherPage.[Publisher Name], * FROM DeveloperPage, PublisherPage, GamePage 
-                WHERE GamePage.GameID=" . $q . " AND GamePage.DevID = DeveloperPage.DevID AND GamePage.PubID = PublisherPage.PubID";
+    //create SQL query to obtain all Game Data (info on game from Game Table joined with Dev and Pub names from the Developer and Publisher tables)
+    $sqlquery = "SELECT Developers.[DeveloperName], Publishers.[PublisherName], * FROM Developers, Publishers, Games 
+                WHERE Games.GameID=" . $q . " AND Games.DevID = Developers.DevID AND Games.PubID = Publishers.PubID";
     $result = sqlsrv_query($connection, $sqlquery); //execute SQL query
 
     //if the SQL query gets data,store the data in variable to be formatted in json
