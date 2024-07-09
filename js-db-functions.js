@@ -94,8 +94,14 @@ async function getFeaturedGame() {
             //Get the platform data for the featured game
             document.getElementById("FeaturedGamePlatforms").innerHTML = await getPlatformData(gameID);
 
+            var gameScore = "";
+            if(gameData['CurrentScore'] == 0.0)
+                gameScore = "N/A";
+            else
+                gameScore = gameData['CurrentScore'].toFixed(2) + "%";
+
             //Get current Score of game to two decimal places
-            document.getElementById("FeaturedGameScore").innerHTML = gameData['CurrentScore'].toFixed(2);
+            document.getElementById("FeaturedGameScore").innerHTML = gameScore;
         }               
     }
     xmlhttpFeaturedGame.open("GET", "GameData.php?q=" + gameID, true);
