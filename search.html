@@ -14,7 +14,7 @@
     <body class="bg-secondary d-flex flex-column" onLoad="populateDevDropdown(); populatePubDropdown(); populatePlatforms(); populateYears(); showResults();">
         <!-- Navbar with Site Icon, Title and Search bar -->
         <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
-        <nav class="navbar navbar-expand-md top navbar-dark bg-dark p-1">
+        <nav class="navbar navbar-expand-md top navbar-dark bg-dark px-1">
             <div class="container-xxl"> <!-- use xxl container to keep icon/title and search bar/button no further than a certain distance from each other in case viewed on extremely large screens  -->
                 <!-- set the icon for the website and the title (current doesn't link to anything, but will be homepage button)-->
                 <a href="https://gameratingsapp.com/" class="navbar-brand">
@@ -31,7 +31,7 @@
 
                 <!-- Search bar and submit button for searching games on site. Enclosed in div that hides the search bar and button behind the above navbar toggler button on smaller screen sizes -->
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSearchField">
-                    <form  action="search.html" class="d-flex pt-3" role="search">
+                    <form  action="search.html" class="d-flex" role="search">
                         <input type="search" id="Game" name="Game" class="form-control me-2" placeholder="Search...">
 
                         <!-- hidden search fields to feed search filters once search button is clicked -->
@@ -47,58 +47,69 @@
             </div>
         </nav>
 
-        <section id="AdvancedSearch">
-            <div class="container-md py-5">
+        <!-- Advanced Search -->
+        <div class="offcanvas offcanvas-top bg-secondary" tabindex="-1" id="AdvancedSearch" aria-labelledby="sidebar-label">
+            <div class="container-md pt-3 pb-4">
                 <!-- Display title of section on page -->
-                <div class="row justify-content-center">
+                <div class="offcanvas-header pb-1">
                     <h2 class="fw-bold px-3">Advanced Search</h2>
-                    <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
+                    <button type="button" class="btn-close pe-5" data-bs-dismiss="offcanvas"></button>
                 </div>
 
-                <form action="search.html" method="GET">
-                    <div class="row fw-bold d-flex justify-content-center">
-                        <div class="col-8">
-                            <label for="Search">Game: </label>
-                            <input type="text" id="Game" name="Game">
+                <div class="offcanvas-body pt-0">
+                    <form action="search.html" method="GET">
+                        <div class="row">
+                            <div class="input-group d-flex justify-content-between">
+                                <div class="col-6 col-lg-9 p-1">
+                                    <input type="text" class="form-control" id="Game" name="Game" placeholder="Game">
+                                </div>
+
+                                <div class="col-6 col-lg-3 p-1">
+                                    <span id="platforms"></span>
+                                </div>
+
+                                <div class="col-6 col-lg-4 p-1">
+                                    <span id="developers"></span>
+                                </div>
+
+                                <div class="col-6 col-lg-4 p-1">
+                                    <span id="publishers"></span>
+                                </div>
+                                
+                                <div class="col-6 col-lg-4 p-1">
+                                    <span id="year"></span>
+                                </div>
+
+                                <div class="col-6 p-1 d-lg-none">
+                                    <input class="btn btn-light col-12 fw-bold" type="submit" value="Submit">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <div class="col-2 p-1 d-none d-lg-block">
+                                    <input class="btn btn-light col-12 fw-bold" type="submit" value="Submit">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-8">
-                            <label for="Developer">Developer: </label>
-                            <span id="developers"></span>
-                        </div>
-
-                        <div class="col-8">
-                            <label for="Publisher">Publisher: </label>
-                            <span id="publishers"></span>
-                        </div>
-
-                        <div class="col-8">
-                            <label for="Platform">Platform: </label>
-                            <span id="platforms"></span>
-                        </div>
-                        
-                        <div class="col-8">
-                            <label for="Year">Release Year: </label>
-                            <span id="year"></span>
-                        </div>
-
-                        <div class="col-8">
-                            <input type="submit" value="Submit">
-                        </div>
-                    </div>
-                </form>
-
-
+                    </form>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <section class="bg-dark text-light pt-4" id="SearchResults">
-            <div class="container-md">
-                <!-- Display title of section on page -->
-                <div class="row justify-content-center">
-                    <h2 class="fw-bold px-3">Search Results</h2>
-                    <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
-                    <div class="pb-3"></div>
+        <section class="bg-dark text-light" id="SearchResults">
+            <div style="background-color: #343a40;">
+                <div class="container-md pt-4">
+                    <!-- Display title of section on page -->
+                    <div class="row">
+                        <div class="d-flex justify-content-between">
+                            <h2 class="fw-bold px-3">Search Results</h2>
+                            <a class="fw-bold" href="#AdvancedSearch" data-bs-toggle="offcanvas" role="button">Advanced Search</a>
+                        </div>
+                        <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
+                        <div class="pb-3"></div>
+                    </div>
                 </div>
             </div>
 

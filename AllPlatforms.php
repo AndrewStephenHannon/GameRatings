@@ -18,11 +18,11 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain information from the database that is needed for the page's request
-    $sqlquery = "SELECT TOP 1 * FROM PlatformsTable;";
+    $sqlquery = "SELECT TOP 1 * FROM Platforms;";
     $result = sqlsrv_query($connection, $sqlquery);
 
-    $response = "<select id=\"Platform\" name=\"Platform\">";
-    $response .= "<option value=\"\"></option>";
+    $response = "<select class=\"form-select\" id=\"Platform\" name=\"Platform\">";
+    $response .= "<option value=\"\">- Select Platform -</option>";
 
     //if the SQL query gets data, read through the data getting all different platforms in the database and format it for the html page
     //if SQL fails, print out the error

@@ -21,7 +21,7 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain game's platform information
-    $sqlquery = "SELECT TOP 1 * FROM PlatformsTable WHERE GameID=" . $q . ";";
+    $sqlquery = "SELECT TOP 1 * FROM Platforms WHERE GameID=" . $q . ";";
     $result = sqlsrv_query($connection, $sqlquery); //execute SQL query
 
     $response = "";

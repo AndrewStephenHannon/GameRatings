@@ -18,7 +18,7 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain the 4 games that most recently released
-    $sqlquery = "SELECT TOP 4 * FROM GamePage WHERE [Release Date NA] <= getdate() ORDER BY [Release Date NA] DESC";
+    $sqlquery = "SELECT TOP 4 * FROM Games WHERE [ReleaseDate] <= getdate() ORDER BY [ReleaseDate] DESC";
     $result = sqlsrv_query($connection, $sqlquery);
 
     $response = array();

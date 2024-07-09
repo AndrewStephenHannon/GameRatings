@@ -21,7 +21,7 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain reviews data for specified game from the database
-    $sqlquery = "SELECT * FROM ReviewTable WHERE GameID=" . $q;
+    $sqlquery = "SELECT * FROM Reviews WHERE GameID=" . $q;
     $result = sqlsrv_query($connection, $sqlquery); //execute the SQL query
 
     $response = "";
@@ -33,11 +33,11 @@
         //format table entries of reviews for the game's page
         While($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
             $response .= "<tr>";
-            $response .= "<td>" . $row["Publication Name"] . "</td>";
-            $response .= "<td><a href=\"" . $row["Review Link"] . "\" target=\"blank\">Review</a></td>";
-            $response .= "<td>" . $row["Publication Date"] . "</td>";
-            $response .= "<td style=\"text-align: right\">" . $row["Review Score"] . "</td>";
-            $response .= "<td style=\"text-align: right\">" . $row["Review Percentage"] . "%</td>";
+            $response .= "<td>" . $row["SiteName"] . "</td>";
+            $response .= "<td><a href=\"" . $row["ReviewLink"] . "\" target=\"blank\">Review</a></td>";
+            $response .= "<td>" . $row["PublicationDate"] . "</td>";
+            $response .= "<td style=\"text-align: right\">" . $row["ReviewScore"] . "</td>";
+            $response .= "<td style=\"text-align: right\">" . $row["ReviewPercentage"] . "%</td>";
             $response .= "</tr>";
         }
     }

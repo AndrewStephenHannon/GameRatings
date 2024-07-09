@@ -23,7 +23,7 @@
     $average = "N/A"; //instantiate the average variable
     
     //create SQL query for getting all reviews for the specified game
-    $sqlGetReviews = "SELECT * FROM ReviewTable WHERE GameID=" . $q;
+    $sqlGetReviews = "SELECT * FROM Reviews WHERE GameID=" . $q;
     $result = sqlsrv_query($connection, $sqlGetReviews); //execute SQL query
 
     $count = 0;
@@ -33,7 +33,7 @@
     {
         //if data is retrieved, go through data adding up the total value of review scores and counting the number of reviews
         While($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
-            $total = $total + $row["Review Percentage"];
+            $total = $total + $row["ReviewPercentage"];
             $count = $count + 1;
         }
 
@@ -43,7 +43,7 @@
 
         //if an average was obtained, update the game's average in the database to ensure the aggregated score is up to date
         if($average != "N/A") {
-            $sqlUpdateAverage = "UPDATE GamePage SET CurrentScore = $average WHERE GameID=" . $q;
+            $sqlUpdateAverage = "UPDATE Games SET CurrentScore = $average WHERE GameID=" . $q;
             sqlsrv_query($connection, $sqlUpdateAverage);
         }
     }

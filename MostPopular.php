@@ -18,7 +18,7 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain information from the database that is needed for the page's request
-    $sqlquery = "SELECT TOP 10 * FROM GamePage ORDER BY PageCount DESC";
+    $sqlquery = "SELECT TOP 10 * FROM Games ORDER BY PageCount DESC";
     $result = sqlsrv_query($connection, $sqlquery);
 
     $response = array();
