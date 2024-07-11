@@ -24,18 +24,18 @@
                     if(this.readyState == 4 && this.status == 200) {
                         const gameData = JSON.parse(this.responseText);
 
-                        var dateParse = JSON.parse(JSON.stringify(gameData["ReleaseDate"]));
+                        var dateParse = JSON.parse(JSON.stringify(gameData['GameData']["ReleaseDate"]));
                         var date = JSON.stringify(dateParse["date"]).split(" ");
                         date = date[0].split("\"");
 
-                        document.getElementById("Title").innerHTML = gameData["GameName"];
-                        document.getElementById("BoxArt").innerHTML = "<img src=\"" + gameData["BoxArt"] + "\" class=\"box-art\">";
-                        document.getElementById("Description").innerHTML = gameData["Description"];
+                        document.getElementById("Title").innerHTML = gameData['GameData']["GameName"];
+                        document.getElementById("BoxArt").innerHTML = "<img src=\"" + gameData['GameData']["BoxArt"] + "\" class=\"box-art\">";
+                        document.getElementById("Description").innerHTML = gameData['GameData']["Description"];
                         document.getElementById("ReleaseDate").innerHTML = date[1];
-                        document.getElementById("Genre").innerHTML = gameData["Genre"];
+                        document.getElementById("Genre").innerHTML = gameData['GameData']["Genre"];
 
-                        pubID = gameData["PubID"];
-                        devID = gameData["DevID"];
+                        pubID = gameData['GameData']["PubID"];
+                        devID = gameData['GameData']["DevID"];
                     }
                 };
                 xmlhttpGameData.open("GET", "GameData.php?q=" + gameID, false);
