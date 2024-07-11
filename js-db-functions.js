@@ -70,35 +70,43 @@ async function getFeaturedGame() {
     const firstDate = new Date(1900,1,1);   //get a starting date to start counting days from
     const secondDate = new Date();          //get current date
     //get the difference between dates in number of days and get the modular of result using total number of games in the database to obtain gameID
-    var gameID = Math.floor((secondDate - firstDate) / oneDay) % await getTotalNumGames();
+    var gameID = (Math.floor((secondDate - firstDate) / oneDay) % await getTotalNumGames()) + 1;
         
     xmlhttpFeaturedGame.onreadystatechange = async function() {
         if(this.readyState == 4 && this.status == 200) {
             const gameData = JSON.parse(this.responseText);
 
             //set the box art for the Featured Game with link to the game's page
-            document.getElementById("FeaturedGameBoxArt").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameID'] + "\"><img src=\"" + gameData['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>";
+            document.getElementById("FeaturedGameBoxArt").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameData']['GameID'] + "\"><img src=\"" + gameData['GameData']['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>";
             //set the Game Title, Description, Developer, Publisher, and genre
-            document.getElementById("FeaturedGameName").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameID'] + "\">" + gameData['GameName'] + "</a>";
-            document.getElementById("FeaturedGameDescription").innerHTML = gameData['Description'];
-            document.getElementById("FeaturedGameDeveloper").innerHTML = gameData['DeveloperName'];
-            document.getElementById("FeaturedGamePublisher").innerHTML = gameData['PublisherName'];
-            document.getElementById("FeaturedGameGenre").innerHTML = gameData['Genre'];
+            document.getElementById("FeaturedGameName").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameData']['GameID'] + "\">" + gameData['GameData']['GameName'] + "</a>";
+            document.getElementById("FeaturedGameDescription").innerHTML = gameData['GameData']['Description'];
+            document.getElementById("FeaturedGameDeveloper").innerHTML = gameData['GameData']['DeveloperName'];
+            document.getElementById("FeaturedGamePublisher").innerHTML = gameData['GameData']['PublisherName'];
+            document.getElementById("FeaturedGameGenre").innerHTML = gameData['GameData']['Genre'];
 
             //parse release date in desired format (YYYY-MM-DD)
-            var parseReleaseDate = JSON.parse(JSON.stringify(gameData["ReleaseDate"]));
+            var parseReleaseDate = JSON.parse(JSON.stringify(gameData['GameData']["ReleaseDate"]));
             var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
             releaseDate = releaseDate[0].split("\"");
             document.getElementById("FeaturedGameReleaseDate").innerHTML = releaseDate[1];
 
+            var platforms = "";
+
+            for(var key in gameData['PlatformData'])
+            {
+                if(gameData['PlatformData'][key] && key != 'GameID')
+                    platforms +=  ", " + key;
+            }
+
             //Get the platform data for the featured game
-            document.getElementById("FeaturedGamePlatforms").innerHTML = await getPlatformData(gameID);
+            document.getElementById("FeaturedGamePlatforms").innerHTML = platforms.substring(2); //await getPlatformData(gameID);
 
             var gameScore = "";
             if(gameData['CurrentScore'] == 0.0)
                 gameScore = "N/A";
             else
-                gameScore = gameData['CurrentScore'].toFixed(2) + "%";
+                gameScore = gameData['GameData']['CurrentScore'].toFixed(2) + "%";
 
             //Get current Score of game to two decimal places
             document.getElementById("FeaturedGameScore").innerHTML = gameScore;
@@ -123,21 +131,6 @@ function getTotalNumGames() {
         }
         xmlhttpTotalNumGames.open("GET", "GetTotalGames.php", true);
         xmlhttpTotalNumGames.send();
-    });
-}
-
-//Call to PlatformsData.php to obtain the platforms the game is on given the gameID and populates the platforms field of the featured fame section
-function getPlatformData(gameID) {
-    return new Promise((resolve) => {
-        var xmlhttpPlatforms = new XMLHttpRequest();
-
-        xmlhttpPlatforms.onreadystatechange = function() {
-            if(this.readyState == 4 && this.status == 200) {
-                resolve(this.responseText);
-            }
-        };
-        xmlhttpPlatforms.open("GET", "PlatformsData.php?q=" + gameID, true);
-        xmlhttpPlatforms.send();
     });
 }
 
@@ -236,7 +229,8 @@ function showResults() {
 
             var resultsContents = ""
 
-            for(var i=0; i<searchResults.length; i++) {
+            console.log(searchResults.length);
+            for(var i=0; i<Object.keys(searchResults['GameData']).length; i++) {
                 var odd = i%2;  //get if the gameID is even or odd to determine the styling
 
                 //store html and css/bootstrap styling code for displaying search results depending on the gameID (gives table like listing to breakup results and make more readable)
@@ -253,7 +247,7 @@ function showResults() {
                     resultsContents += "<div class=\"col-lg-3 mb-2 d-block d-lg-none\">";
 
                 resultsContents +=
-                                    "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\"><img src=\"" + searchResults[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
+                                    "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults['GameData']['Game' + i]['GameID'] + "\"><img src=\"" + searchResults['GameData']['Game' + i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
                                 "</div>";
 
                 if(!odd)
@@ -263,33 +257,43 @@ function showResults() {
 
                 resultsContents +=
                                     "<div class=\"row\">" +
-                                        "<h2><a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\">" + searchResults[i]['GameName'] + "</a></h2>" +
+                                        "<h2><a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults['GameData']['Game' + i]['GameID'] + "\">" + searchResults['GameData']['Game' + i]['GameName'] + "</a></h2>" +
                                     "</div>" +
                                     "<div class=\"row\">" +
-                                        "<p>" + searchResults[i]['Description'] + "</p>" +
+                                        "<p>" + searchResults['GameData']['Game' + i]['Description'] + "</p>" +
                                     "</div>" +
                                     "<div class=\"row justify-content-between\">" +
                                         "<div class=\"col-6 Justify-content-start\">" +
-                                            "<tag class=\"fw-bold\">Developer: </tag>" + searchResults[i]['DeveloperName'] + "<br>" +
-                                            "<tag class=\"fw-bold\">Publisher: </tag>" + searchResults[i]['PublisherName'] + "<br>" +
-                                            "<tag class=\"fw-bold\">Genre: </tag>" + searchResults[i]['Genre'] + "<br>";
+                                            "<tag class=\"fw-bold\">Developer: </tag>" + searchResults['GameData']['Game' + i]['DeveloperName'] + "<br>" +
+                                            "<tag class=\"fw-bold\">Publisher: </tag>" + searchResults['GameData']['Game' + i]['PublisherName'] + "<br>" +
+                                            "<tag class=\"fw-bold\">Genre: </tag>" + searchResults['GameData']['Game' + i]['Genre'] + "<br>";
+
+
+                //get the platforms fro mthe platformdata results that has true values and create the string result
+                var platforms = "";
+                var gameID = searchResults['GameData']['Game' + i]['GameID'];
+
+                for(var key in searchResults['PlatformData'][gameID])
+                {
+                    if(searchResults['PlatformData'][gameID][key] && key != 'GameID')
+                        platforms +=  ", " + key;
+                }
 
                 //call function for game's platforms and wait for response
-                var platforms = await getPlatformData(searchResults[i]['GameID']);
-                resultsContents += "<tag class=\"fw-bold\">Platform: </tag>" + platforms + "<br>";
+                resultsContents += "<tag class=\"fw-bold\">Platform: </tag>" + platforms.substring(2) + "<br>";
 
 
                 //parse release date in desired format (YYYY-MM-DD)
-                var parseReleaseDate = JSON.parse(JSON.stringify(searchResults[i]["ReleaseDate"]));
+                var parseReleaseDate = JSON.parse(JSON.stringify(searchResults['GameData']['Game' + i]["ReleaseDate"]));
                 var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
                 releaseDate = releaseDate[0].split("\"");
 
                 //if game's score is 0, means no reviews, set it to N/A
                 var gameScore = "";
-                if(searchResults[i]['CurrentScore'] == 0.0)
+                if(searchResults['GameData']['Game' + i]['CurrentScore'] == 0.0)
                     gameScore = "N/A";
                 else
-                    gameScore = searchResults[i]['CurrentScore'].toFixed(2) + "%";
+                    gameScore = searchResults['GameData']['Game' + i]['CurrentScore'].toFixed(2) + "%";
 
                 resultsContents += 
                                             "<tag class=\"fw-bold\">Release Date: </tag>" + releaseDate[1] +
@@ -306,7 +310,7 @@ function showResults() {
                 } else {
                     resultsContents += 
                             "<div class=\"col-lg-3 mb-2 d-none d-lg-block\">" +
-                                "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\"><img src=\"" + searchResults[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
+                                "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults['GameData']['Game' + i]['GameID'] + "\"><img src=\"" + searchResults['GameData']['Game' + i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
                             "</div>"; 
                 }
                 resultsContents +=         

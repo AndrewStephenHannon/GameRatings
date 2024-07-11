@@ -39,7 +39,8 @@
             $sqlquery .= " AND YEAR(Games.[ReleaseDate]) = " . $year;
 
         //close off the SQL query by ordering the results by highest review average
-        $sqlquery .= "ORDER BY Games.CurrentScore Desc";
+        $sqlquery .= "ORDER BY Games.CurrentScore Desc;
+                SELECT * FROM Platforms;";
     }
     //if a platform was specified
     else{
@@ -62,7 +63,8 @@
             $sqlquery .= " AND YEAR(Games.[ReleaseDate]) = " . $year;
 
         //close off the SQL query by ordering the results by highest review average
-        $sqlquery .= "ORDER BY Games.CurrentScore Desc";
+        $sqlquery .= "ORDER BY Games.CurrentScore Desc;
+                SELECT * FROM Platforms;";
     }
     
     //execute the SQL query
@@ -74,9 +76,17 @@
     //if the results return 1 or more database entries, parse the necessary data from the results for each game returned and format for the html table
     if($result)
     {
+        $game_index = 0;
         //Fetch each row of result and store in response array
-        while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
-            $response[] = $row;
+        while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+            $response['GameData']['Game' . $game_index] = $row;
+            $game_index++;
+        }
+        if(sqlsrv_next_result($result)) {
+            while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                $response['PlatformData'][$row['GameID']] = $row;
+            }
+        }
     }
     //if SQL fails, print out the error
     else
