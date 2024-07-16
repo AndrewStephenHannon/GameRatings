@@ -1,6 +1,6 @@
 //JavaScript functions for accessing backend database
 
-//Call to MostPopular.php for getting the list of 10 most popular games and populating the data in the HTML code
+//Create request to MostPopular.php for getting the list of 10 most popular games and populating the data in the HTML code
 function showMostPopular() {
     var xmlhttpMostPopular = new XMLHttpRequest();
 
@@ -61,7 +61,7 @@ function showMostPopular() {
     xmlhttpMostPopular.send();
 }
 
-//Call to GameData.php to get all the necessary game data for the featured game and populates the data in the Featured Game section
+//Create Request to GameData.php to get all the necessary game data for the featured game and populates the data in the Featured Game section
 async function getFeaturedGame() {
     var xmlhttpFeaturedGame = new XMLHttpRequest();
 
@@ -116,7 +116,73 @@ async function getFeaturedGame() {
     xmlhttpFeaturedGame.send();
 }
 
-//call to GetTotalGames.php to get total number of games currently in database
+//Create request to GameData.php to get all game information on requested Game ID
+function getGameData() {
+    var xmlhttpGameData = new XMLHttpRequest();
+    var strings = window.location.search.split("=");
+    var gameID = strings[1];
+
+    xmlhttpGameData.onreadystatechange = async function() {
+        if(this.readyState == 4 && this.status == 200) {
+            const gameData = JSON.parse(this.responseText);
+
+            //set background image as the game's banner art
+            document.getElementById("GameBG").style.background = "url('" + gameData['GameData']['BannerImage'] + "') center no-repeat";
+            document.getElementById("GameBG").style.backgroundSize =  "cover";
+
+            document.getElementById("BoxArt").innerHTML = "<img src=\"" + gameData['GameData']['BoxArt'] + "\" class=\"img-fluid\"></img>";
+
+            //depending on the game's score, set a background colour
+            if(gameData['GameData']['CurrentScore'] >= 75.0) {
+                document.getElementById("ScoreColour").style.background = "rgba(0, 190, 0, 1)";
+                document.getElementById("ScoreColour").style.height = "75px";
+            } else if(gameData['GameData']['CurrentScore'] >= 60.0) {
+                document.getElementById("ScoreColour").style.background = "rgba(255, 255, 0, 1)";
+                document.getElementById("ScoreColour").style.height = "75px";
+            } else if (gameData['GameData']['CurrentScore'] > 0) {
+                document.getElementById("ScoreColour").style.background = "rgba(255, 0, 0, 1)";
+                document.getElementById("ScoreColour").style.height = "75px";
+            } else {
+                document.getElementById("ScoreColour").style.background = "rgba(100, 100, 100, 1)";
+                document.getElementById("ScoreColour").style.height = "75px";
+            }
+
+            //Check if game has an aggregated score or not. If not, set to N/A, otherwise set the score to two decimal places
+            var gameScore = "";
+            if(gameData['CurrentScore'] == 0.0)
+                gameScore = "N/A";
+            else
+                gameScore = gameData['GameData']['CurrentScore'].toFixed(2) + "%";
+            document.getElementById("Score").innerHTML = gameScore;
+
+            document.getElementById("GameName").innerHTML = gameData['GameData']['GameName'];
+            document.getElementById("Description").innerHTML = gameData['GameData']['Description'];
+            document.getElementById("Developer").innerHTML = gameData['GameData']['DeveloperName'];
+            document.getElementById("Publisher").innerHTML = gameData['GameData']['PublisherName'];
+            document.getElementById("Genre").innerHTML = gameData['GameData']['Genre'];
+
+            var platforms = "";
+
+            for(var key in gameData['PlatformData']) {
+                if(gameData['PlatformData'][key] && key != 'GameID')
+                    platforms += ", " + key;
+            }
+
+            document.getElementById("Platforms").innerHTML = platforms.substring(2);
+
+            //parse release date in desired format (YYYY-MM-DD)
+            var parseReleaseDate = JSON.parse(JSON.stringify(gameData['GameData']["ReleaseDate"]));
+            var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
+            releaseDate = releaseDate[0].split("\"");
+
+            document.getElementById("ReleaseDate").innerHTML = releaseDate[1];
+        }
+    }
+    xmlhttpGameData.open("GET", "GameData.php?q=" + gameID, true);
+    xmlhttpGameData.send();
+}
+
+//Create request to GetTotalGames.php to get total number of games currently in database
 function getTotalNumGames() {
     return new Promise((resolve) => {
         var xmlhttpTotalNumGames = new XMLHttpRequest();
@@ -134,7 +200,7 @@ function getTotalNumGames() {
     });
 }
 
-//Call to MostRecentRelease.php to obtain list of the most recetnly released games in the database and populates the Most Recent Releases section of the homepage with formatted HTML and CSS
+//Create request to MostRecentRelease.php to obtain list of the most recetnly released games in the database and populates the Most Recent Releases section of the homepage with formatted HTML and CSS
 function mostRecentReleases() {
     var xmlhttpMostRecentReleases = new XMLHttpRequest();
     
