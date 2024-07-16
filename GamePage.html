@@ -11,85 +11,12 @@
         <script src="js-db-functions.js"></script> <!-- reference to JavaScript file with all JavaScripts written for website -->
         <title>Game Ratings</title>
         <script> 
-            function showDescription() {
+            function showReviews() {
                 var xmlhttpGameData = new XMLHttpRequest();
                 var strings = window.location.search.split("=");
                 var gameID = strings[1];
                 var pubID;
                 var devID;
-
-                xmlhttpGameData.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        const gameData = JSON.parse(this.responseText);
-
-                        var dateParse = JSON.parse(JSON.stringify(gameData['GameData']["ReleaseDate"]));
-                        var date = JSON.stringify(dateParse["date"]).split(" ");
-                        date = date[0].split("\"");
-
-                        document.getElementById("Title").innerHTML = gameData['GameData']["GameName"];
-                        document.getElementById("BoxArt").innerHTML = "<img src=\"" + gameData['GameData']["BoxArt"] + "\" class=\"box-art\">";
-                        document.getElementById("Description").innerHTML = gameData['GameData']["Description"];
-                        document.getElementById("ReleaseDate").innerHTML = date[1];
-                        document.getElementById("Genre").innerHTML = gameData['GameData']["Genre"];
-
-                        pubID = gameData['GameData']["PubID"];
-                        devID = gameData['GameData']["DevID"];
-                    }
-                };
-                xmlhttpGameData.open("GET", "GameData.php?q=" + gameID, false);
-                xmlhttpGameData.send();
-
-                var xmlhttpDev = new XMLHttpRequest();
-
-                xmlhttpDev.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("Developer").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpDev.open("GET", "DevData.php?q=" + devID, false);
-                xmlhttpDev.send();
-
-                var xmlhttpPub = new XMLHttpRequest();
-
-                xmlhttpPub.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("Publisher").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpPub.open("GET", "PubData.php?q=" + pubID, false);
-                xmlhttpPub.send();
-
-                var xmlhttpPlatforms = new XMLHttpRequest();
-
-                xmlhttpPlatforms.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("PlatformData").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpPlatforms.open("GET", "PlatformsData.php?q=" + gameID, false);
-                xmlhttpPlatforms.send();
-
-                var xmlhttpPageCount = new XMLHttpRequest();
-
-                xmlhttpPageCount.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-
-                    }
-                }
-                xmlhttpPageCount.open("GET", "ViewCount.php?q=" + gameID, false);
-                xmlhttpPageCount.send();
-
-                var xmlhttpAverage = new XMLHttpRequest();
-                var count = 0;
-                var average;
-                
-                xmlhttpAverage.onreadystatechange = function() {
-                    if(this.readyState == 4 && this.status == 200) {
-                        document.getElementById("Average").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttpAverage.open("GET", "Average.php?q=" + gameID, false);
-                xmlhttpAverage.send();
 
                 var xmlhttpReviewData = new XMLHttpRequest();
                 var reviewsTable = "<table style=\"width: 100%\"><colgroup><col span=\"1\" style=\"width: 30%\"><col span=\"1\" style=\"width: 30%\"><col span=\"1\" style=\"width: 10%\"><col span=\"1\" style=\"width: 15%\"><col span=\"1\" style=\"width: 15%\"></colgroup>";
@@ -109,7 +36,7 @@
         </script>
     </head>
 
-    <body class="d-flex flex-column text-white" style="background-color: #343a40;"  onLoad="showDescription()">
+    <body class="d-flex flex-column text-white" style="background-color: #343A40;"  onLoad="showReviews(); getGameData()">
         <!-- Navbar with Site Icon, Title and Search bar -->
         <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
         <nav class="navbar navbar-expand-md top navbar-dark bg-dark px-1" style="z-index: 2;">
@@ -145,30 +72,57 @@
             </div>
         </nav>
 
-            <div style="width: 800px;">
-                <body>
-                    <p><b><span style="font-size: 50px;" id="Title"></span></b></p>
-                </body>
+        <section id="GameData">
+            <div class="container-md" style="background-color: #181A1C">
+                <div class="row" id="GameBG">
+                    <div class="d-flex justify-content-center" style="background-image: linear-gradient(rgba(0,0,0,0.5), 50%, rgba(0,0,0,0.5))">
+                        <div class="container-imgtxt border border-white my-4">
+                            <span id="BoxArt"><img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co4jni.png" class="img-fluid"></span>
+                            <div class="fitted-bar d-flex justify-content-center" id="ScoreColour">
+                                <span class="fw-bold textShadow" style="font-size: 3em;" id="Score"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fw-bold" style="font-size: 50px"><span id="GameName"></span></div>
+                    <p><span id="Description"></span></p>
+                    <div class="Justify-content-start">
+                        <tag class="fw-bold">Developer: </tag><span id="Developer"></span><br>
+                        <tag class="fw-bold">Publisher: </tag><span id="Publisher"></span><br>
+                        <tag class="fw-bold">Genre: </tag><span id="Genre"></span><br>
+                        <tag class="fw-bold">Platform: </tag><span id="Platforms"></span><br>
+                        <tag class="fw-bold">Release Date: </tag><span id="ReleaseDate"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="list-group my-4 px-2 d-flex flex-column justify-content-between" style="border-color: black">
+                        <div class="list-group-item text-center fw-bold bg-dark text-white py-0" style="font-size: 40px;">
+                            Reviews
+                        </div>
+                        <div class="list-group-item text-white fw-bold mt-1" style="background-color: rgb(86, 93, 99); font-size: 25px;">
+                            <div class="row justify-content-across">
+                                <div class="col-4 text-start">GameSpot</div>
+                                <div class="col-4 text-center">10/10</div>
+                                <div class="col-4 text-end">100%</div>
+                            </div>
+                        </div>
+                        <div class="list-group-item text-white fw-bold mt-1 bg-secondary" style="font-size: 25px;">
+                            <div class="row justify-content-across">
+                                <div class="col-4 text-start">IGN</div>
+                                <div class="col-4 text-center">10/10</div>
+                                <div class="col-4 text-end">100%</div>
+                            </div>
+                        </div>
+                        <div class="list-group-item text-center fw-bold mt-1 bg-dark text-white" style="font-size: 15px;">
+                            See All Reviews
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h4 style="width: 800px; height: 20px; background-color: #6666ff; color: white">&nbspAggregated Score</h4>
-            <div style="width: 800px; font-size: 50px;">
-                <body>
-                    <b><span id="Average"></span></b>
-                </body>
-            </div>
-            <h4 style="width:800px; height: 20px; background-color: #6666ff; color: white">&nbspDescription</h4>
-            <div style="width: 800px;word-wrap: break-word;">
-                <body>
-                    <span id="BoxArt"></span><span id="Description"></span><br><br>
-                    <span class="text-under-image">
-                        <br><b>Developer: </b><span id="Developer"></span><br>
-                        <b>Publisher: </b><span id="Publisher"></span><br>
-                        <b>Genre: </b><span id="Genre"></span><br>
-                        <b>Platform: </b><span id="PlatformData"></span><br>
-                        <b>Release Date: </b><span id="ReleaseDate"></span>
-                    </span>
-                </body>
-            </div>
+        </section>
+
+
             <h4 style="width: 800px; height: 20px; background-color: #6666ff; color: white">&nbspReviews</h4>
             <div style="width: 800px; display: table;">
                 <div style="display: table-row;">
