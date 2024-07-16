@@ -109,7 +109,42 @@
         </script>
     </head>
 
-    <body class="d-flex flex-column" style="background-color: #343a40;"  onLoad="showDescription()">
+    <body class="d-flex flex-column text-white" style="background-color: #343a40;"  onLoad="showDescription()">
+        <!-- Navbar with Site Icon, Title and Search bar -->
+        <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
+        <nav class="navbar navbar-expand-md top navbar-dark bg-dark px-1" style="z-index: 2;">
+            <div class="container-xxl"> <!-- use xxl container to keep icon/title and search bar/button no further than a certain distance from each other in case viewed on extremely large screens  -->
+                <!-- set the icon for the website and the title (current doesn't link to anything, but will be homepage button)-->
+                <a href="https://gameratingsapp.com/" class="navbar-brand">
+                    <span class="fw-bold text-white h1">
+                        <i class="bi bi-joystick"></i>
+                        Game Ratings
+                    </span>
+                </a>
+
+                <!-- nav button that appears on smaller screens such as mobile/phone screens -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearchField">
+                    <i class="bi bi-search"></i> <!-- collapsed navbar icon -->
+                </button>
+
+                <!-- Search bar and submit button for searching games on site. Enclosed in div that hides the search bar and button behind the above navbar toggler button on smaller screen sizes -->
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSearchField">
+                    <form  action="search.html" class="d-flex" role="search">
+                        <input type="search" id="Game" name="Game" class="form-control me-2" placeholder="Search...">
+
+                        <!-- hidden search fields to feed search filters once search button is clicked -->
+                        <input type="hidden" id="Dev" name="Developer">
+                        <input type="hidden" id="Pub" name="Publisher">
+                        <input type="hidden" id="Platform" name="Platform">
+                        <input type="hidden" id="Year" name="Year">
+
+                        <!-- search button -->
+                        <button class="btn btn-outline-light fw-bold" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
             <div style="width: 800px;">
                 <body>
                     <p><b><span style="font-size: 50px;" id="Title"></span></b></p>
