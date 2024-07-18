@@ -364,8 +364,13 @@ function populateYears() {
     document.getElementById("year").innerHTML = html;
 }
 
-function updateViews() {
+function updateViewCount() {
+    var xmlhttpViewCount = new XMLHttpRequest();
+    var strings = window.location.search.split("=");
+    var gameID = strings[1];
 
+    xmlhttpViewCount.open("GET", "ViewCount.php?q=" + gameID, true);
+    xmlhttpViewCount.send();
 }
 
 
