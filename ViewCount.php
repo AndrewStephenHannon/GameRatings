@@ -19,7 +19,7 @@
     else
         echo "No connection established<br>";
 
-    //create SQL query to update the view count for the specified game page by incremented by 1
+    //create SQL query to update the view count for the specified game page by incrementing by 1
     $sqlquery = "UPDATE Games SET PageCount = PageCount + 1 WHERE GameID=" . $q;
     sqlsrv_query($connection, $sqlquery); //execute the SQL query
 
