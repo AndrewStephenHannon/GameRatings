@@ -116,13 +116,98 @@ async function getFeaturedGame() {
     xmlhttpFeaturedGame.send();
 }
 
+function getAllGameInfo() {
+    getReviews(getGameData);
+}
+
+async function getReviews(gameDataCallback) {
+    var xmlhttpReviews = new XMLHttpRequest();
+    var strings = window.location.search.split("=");
+    var gameID = strings[1];
+
+    xmlhttpReviews.onreadystatechange = async function() {
+        if(this.readyState == 4 && this.status == 200) {
+            const reviewData = JSON.parse(this.responseText);
+
+            var numReviews = Object.keys(reviewData).length;
+            var totalReviewPercentages = 0.00;
+            resultsContents = "";
+
+            for(var i=0; i<numReviews; i++) {
+                var odd = i%2;
+
+
+                if(i==5)
+                    resultsContents += "<div class=\"collapse multi-collapse\">";
+
+                if(odd) 
+                    resultsContents += "<li class=\"list-group-item text-white fw-bold border-5 border-bottom-0 border-dark bg-secondary\" style=\"font-size: 25px;\">";
+                else
+                    resultsContents += "<li class=\"list-group-item text-white fw-bold border-5 border-bottom-0 border-dark\" style=\"background-color: rgb(86, 93, 99); font-size: 25px;\">";
+
+
+                resultsContents +=
+                    "<a class=\"row justify-content-across\" href=\"" + reviewData[i]['ReviewLink'] + "\">" +
+                        "<div class=\"col-4 text-start\">" + reviewData[i]['SiteName'] + "</div>" +
+                        "<div class=\"col-4 text-center\">" + reviewData[i]['ReviewScore'] + "</div>";
+                        
+                if(reviewData[i]['ReviewPercentage']==0)
+                    resultsContents += "<div class=\"col-4 text-end\">0";
+                else
+                    resultsContents += "<div class=\"col-4 text-end\">";
+                resultsContents +=
+                        reviewData[i]['ReviewPercentage'] + "%</div>" +
+                    "</a>" +
+                "</li>";
+
+                totalReviewPercentages += parseFloat(reviewData[i]['ReviewPercentage']);
+            }
+
+            //update average score in database
+            var average = totalReviewPercentages/numReviews;
+            await updateAverage(gameID, average);
+
+            //if there are more than 5 reviews for the game, setup a button to expand to see all reviews
+            if(numReviews>5) {
+                resultsContents += 
+                        "</div>" +
+                        "<li class=\"btn list-group-item text-center fw-bold bg-dark text-white border-0\" style=\"font-size: 15px;\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\".multi-collapse\">" +
+                            "See All Reviews" +
+                        "</li>";
+            } else {
+                resultsContents +=
+                        "<li class=\"list-group-item bg-dark border-0 pt-1 pb-0\"></li>";
+            }
+
+            document.getElementById("Reviews").innerHTML = resultsContents;
+
+            //call game data after average has been updated
+            gameDataCallback();
+        }    
+    }
+    xmlhttpReviews.open("GET", "ReviewData.php?q=" + gameID, true);
+    xmlhttpReviews.send();
+}
+
+async function updateAverage(gameID, average) {
+    var xmlhttpAverage = new XMLHttpRequest();
+
+    xmlhttpAverage.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+
+        }
+    }
+    xmlhttpAverage.open("GET", "Average.php?gameid=" + gameID + "&average=" + average, true);
+    xmlhttpAverage.send();
+}
+
 //Create request to GameData.php to get all game information on requested Game ID
 function getGameData() {
     var xmlhttpGameData = new XMLHttpRequest();
     var strings = window.location.search.split("=");
     var gameID = strings[1];
 
-    xmlhttpGameData.onreadystatechange = async function() {
+    xmlhttpGameData.onreadystatechange = function() {
         if(this.readyState == 4 && this.status == 200) {
             const gameData = JSON.parse(this.responseText);
 
@@ -278,71 +363,11 @@ function populateYears() {
 
     document.getElementById("year").innerHTML = html;
 }
-function calcAverage() {
-
-}
 
 function updateViews() {
 
 }
 
-function getReviews() {
-    var xmlhttpReviews = new XMLHttpRequest();
-    var strings = window.location.search.split("=");
-    var gameID = strings[1];
-
-    xmlhttpReviews.onreadystatechange = async function() {
-        if(this.readyState == 4 && this.status == 200) {
-            const reviewData = JSON.parse(this.responseText);
-
-            var numReviews = Object.keys(reviewData).length;
-            resultsContents = "";
-
-            for(var i=0; i<numReviews; i++) {
-                var odd = i%2;
-
-
-                if(i==5)
-                    resultsContents += "<div class=\"collapse multi-collapse\">"
-
-                if(odd) 
-                    resultsContents += "<li class=\"list-group-item text-white fw-bold border-5 border-bottom-0 border-dark bg-secondary\" style=\"font-size: 25px;\">";
-                else
-                    resultsContents += "<li class=\"list-group-item text-white fw-bold border-5 border-bottom-0 border-dark\" style=\"background-color: rgb(86, 93, 99); font-size: 25px;\">";
-
-
-                resultsContents +=
-                    "<a class=\"row justify-content-across\" href=\"" + reviewData[i]['ReviewLink'] + "\">" +
-                        "<div class=\"col-4 text-start\">" + reviewData[i]['SiteName'] + "</div>" +
-                        "<div class=\"col-4 text-center\">" + reviewData[i]['ReviewScore'] + "</div>"
-                        
-                if(reviewData[i]['ReviewPercentage']==0)
-                    resultsContents += "<div class=\"col-4 text-end\">0";
-                else
-                    resultsContents += "<div class=\"col-4 text-end\">"
-                resultsContents +=
-                        reviewData[i]['ReviewPercentage'] + "%</div>" +
-                    "</a>" +
-                "</li>";
-            }
-
-            if(numReviews>5) {
-                resultsContents += 
-                        "</div>" +
-                        "<li class=\"btn list-group-item text-center fw-bold bg-dark text-white border-0\" style=\"font-size: 15px;\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\".multi-collapse\">" +
-                            "See All Reviews" +
-                        "</li>";
-            } else {
-                resultsContents +=
-                        "<li class=\"list-group-item bg-dark border-0 pt-1 pb-0\"></li>"
-            }
-
-            document.getElementById("Reviews").innerHTML = resultsContents;
-        }    
-    }
-    xmlhttpReviews.open("GET", "ReviewData.php?q=" + gameID, true);
-    xmlhttpReviews.send();
-}
 
 function showResults() {
     var xmlhttpGameResults = new XMLHttpRequest();
