@@ -17,7 +17,7 @@
     else
         echo "No connection established<br>";
     //get number of games in database
-    $sql_count_query = "SELECT COUNT(*) AS 'count' FROM GamePage";
+    $sql_count_query = "SELECT COUNT(*) AS 'count' FROM Games";
     $count_result = sqlsrv_query($connection, $sql_count_query);
     if($count_result)
     {
@@ -29,7 +29,7 @@
         die(print_r(sqlsrv_errors(), true));
     }
 
-    echo $num_games; //return the total number of games in the GamePage table of the database
+    echo $num_games; //return the total number of games in the Games table of the database
 
     sqlsrv_close($connection); //close the connection to the database
 ?>

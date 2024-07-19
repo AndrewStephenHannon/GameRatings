@@ -14,7 +14,7 @@
             else
                 die(print_r(sqlsrv_errors(), true));
 
-            $sqlquery = "SELECT * FROM GamePage";
+            $sqlquery = "SELECT * FROM Games";
             $result = sqlsrv_query($connection, $sqlquery);
 
             $response = "";
@@ -22,7 +22,7 @@
             if($result)
             {
                 while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-                    $response .= "Title: " . $row["Game Name"]. "<br>";
+                    $response .= "Title: " . $row["GameName"]. "<br>";
                 }
             }
             else
@@ -43,7 +43,7 @@
             else
                 echo "No connection established<br>";
 
-            $sqlquery = "SELECT * FROM GamePage";
+            $sqlquery = "SELECT * FROM Games";
             $result = sqlsrv_query($connection, $sqlquery);
 
             $response = "";
@@ -51,7 +51,7 @@
             if($result)
             {
                 while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-                    $response .= "Title: " . $row["Game Name"]. "<br>";
+                    $response .= "Title: " . $row["GameName"]. "<br>";
                 }
             }
             else

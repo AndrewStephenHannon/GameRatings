@@ -18,7 +18,7 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain information from the database that is needed for the page's request
-    $sqlquery = "SELECT TOP 1 * FROM PlatformsTable;";
+    $sqlquery = "SELECT TOP 1 * FROM Platforms;";
     $result = sqlsrv_query($connection, $sqlquery);
 
     $response = "<select class=\"form-select\" id=\"Platform\" name=\"Platform\">";

@@ -21,7 +21,7 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain game's developer information
-    $sqlquery = "SELECT TOP 1 * FROM DeveloperPage WHERE DevID=" . $q;
+    $sqlquery = "SELECT TOP 1 * FROM Developers WHERE DevID=" . $q;
     $result = sqlsrv_query($connection, $sqlquery);
 
     $response = "";
@@ -32,7 +32,7 @@
     {
         $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
 
-        $response = $row["Developer Name"];
+        $response = $row["DeveloperName"];
     }
     else
     {

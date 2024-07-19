@@ -1,6 +1,6 @@
 //JavaScript functions for accessing backend database
 
-//Call to MostPopular.php for getting the list of 10 most popular games and populating the data in the HTML code
+//Create request to MostPopular.php for getting the list of 10 most popular games and populating the data in the HTML code
 function showMostPopular() {
     var xmlhttpMostPopular = new XMLHttpRequest();
 
@@ -18,9 +18,9 @@ function showMostPopular() {
                 /**********************************/
 
                 /******** Game Titles ********/
-                document.getElementById("GameName" + index).innerHTML = mostPopular[i]['Game Name'];  //set vertical, closed accordion Game Name to name of current game in results
+                document.getElementById("GameName" + index).innerHTML = mostPopular[i]['GameName'];  //set vertical, closed accordion Game Name to name of current game in results
                 //Set body of expanded accordion Game Name to current game from results
-                var gameNameLink1 = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + mostPopular[i]['GameID'] + "\" class=\"ignore-link-format\"><h4 class=\"fw-bold textShadow\">" + mostPopular[i]['Game Name'] + "</h4></a>";
+                var gameNameLink1 = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + mostPopular[i]['GameID'] + "\" class=\"ignore-link-format\"><h4 class=\"fw-bold textShadow\">" + mostPopular[i]['GameName'] + "</h4></a>";
                 document.getElementById("GameNameLink" + index).innerHTML = gameNameLink1;
                 /*****************************/
 
@@ -41,11 +41,16 @@ function showMostPopular() {
                     boxScoreLink += "style=\"background: rgba(0, 190, 0, 1);\">";
                 else if(mostPopular[i]['CurrentScore'] >= 60.0)
                     boxScoreLink += "style=\"background: rgba(255, 255, 0, 1);\">";
+                else if (mostPopular[i]['CurrentScore'] > 0)
+                    boxScoreLink += "style=\"background: rgba(255, 0, 0, 1);\">"
                 else
-                    boxScoreLink += "style=\"background: rgba(255, 0, 0, 1);\">";
+                    boxScoreLink += "style=\"background: rgba(100, 100, 100, 1);\">";
 
                 //style text of Current Score to be at bottom of parenting div and centered with a text shadow
-                boxScoreLink += "<span class=\"text-center fw-bold textShadow bottom-centered\" style=\"font-size: 1.5em;\">" + mostPopular[i]['CurrentScore'].toFixed(2) + "%</span>";
+                if(mostPopular[i]['CurrentScore'] > 0)
+                    boxScoreLink += "<span class=\"text-center fw-bold textShadow bottom-centered\" style=\"font-size: 1.5em;\">" + mostPopular[i]['CurrentScore'].toFixed(2) + "%</span>";
+                else
+                    boxScoreLink += "<span class=\"text-center fw-bold textShadow bottom-centered\" style=\"font-size: 1.5em;\">N/A</span>";
                 boxScoreLink += "</div></a>"
                 document.getElementById("boxScoreLink" + index).innerHTML = boxScoreLink; //inject html with current game's page link, box art, and aggregated score to two decimal places with html formatting
                 /****************************************/
@@ -56,7 +61,7 @@ function showMostPopular() {
     xmlhttpMostPopular.send();
 }
 
-//Call to GameData.php to get all the necessary game data for the featured game and populates the data in the Featured Game section
+//Create Request to GameData.php to get all the necessary game data for the featured game and populates the data in the Featured Game section
 async function getFeaturedGame() {
     var xmlhttpFeaturedGame = new XMLHttpRequest();
 
@@ -65,39 +70,204 @@ async function getFeaturedGame() {
     const firstDate = new Date(1900,1,1);   //get a starting date to start counting days from
     const secondDate = new Date();          //get current date
     //get the difference between dates in number of days and get the modular of result using total number of games in the database to obtain gameID
-    var gameID = Math.floor((secondDate - firstDate) / oneDay) % await getTotalNumGames();
+    var gameID = (Math.floor((secondDate - firstDate) / oneDay) % await getTotalNumGames()) + 1;
         
     xmlhttpFeaturedGame.onreadystatechange = async function() {
         if(this.readyState == 4 && this.status == 200) {
             const gameData = JSON.parse(this.responseText);
 
             //set the box art for the Featured Game with link to the game's page
-            document.getElementById("FeaturedGameBoxArt").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameID'] + "\"><img src=\"" + gameData['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>";
+            document.getElementById("FeaturedGameBoxArt").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameData']['GameID'] + "\"><img src=\"" + gameData['GameData']['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>";
             //set the Game Title, Description, Developer, Publisher, and genre
-            document.getElementById("FeaturedGameName").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameID'] + "\">" + gameData['Game Name'] + "</a>";
-            document.getElementById("FeaturedGameDescription").innerHTML = gameData['Description'];
-            document.getElementById("FeaturedGameDeveloper").innerHTML = gameData['Developer Name'];
-            document.getElementById("FeaturedGamePublisher").innerHTML = gameData['Publisher Name'];
-            document.getElementById("FeaturedGameGenre").innerHTML = gameData['Genre'];
+            document.getElementById("FeaturedGameName").innerHTML = "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + gameData['GameData']['GameID'] + "\">" + gameData['GameData']['GameName'] + "</a>";
+            document.getElementById("FeaturedGameDescription").innerHTML = gameData['GameData']['Description'];
+            document.getElementById("FeaturedGameDeveloper").innerHTML = gameData['GameData']['DeveloperName'];
+            document.getElementById("FeaturedGamePublisher").innerHTML = gameData['GameData']['PublisherName'];
+            document.getElementById("FeaturedGameGenre").innerHTML = gameData['GameData']['Genre'];
 
             //parse release date in desired format (YYYY-MM-DD)
-            var parseReleaseDate = JSON.parse(JSON.stringify(gameData["Release Date NA"]));
+            var parseReleaseDate = JSON.parse(JSON.stringify(gameData['GameData']["ReleaseDate"]));
             var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
             releaseDate = releaseDate[0].split("\"");
             document.getElementById("FeaturedGameReleaseDate").innerHTML = releaseDate[1];
 
+            var platforms = "";
+
+            for(var key in gameData['PlatformData'])
+            {
+                if(gameData['PlatformData'][key] && key != 'GameID')
+                    platforms +=  ", " + key;
+            }
+
             //Get the platform data for the featured game
-            document.getElementById("FeaturedGamePlatforms").innerHTML = await getPlatformData(gameID);
+            document.getElementById("FeaturedGamePlatforms").innerHTML = platforms.substring(2); //await getPlatformData(gameID);
+
+            var gameScore = "";
+            if(gameData['CurrentScore'] == 0.0)
+                gameScore = "N/A";
+            else
+                gameScore = gameData['GameData']['CurrentScore'].toFixed(2) + "%";
 
             //Get current Score of game to two decimal places
-            document.getElementById("FeaturedGameScore").innerHTML = gameData['CurrentScore'].toFixed(2);
+            document.getElementById("FeaturedGameScore").innerHTML = gameScore;
         }               
     }
     xmlhttpFeaturedGame.open("GET", "GameData.php?q=" + gameID, true);
     xmlhttpFeaturedGame.send();
 }
 
-//call to GetTotalGames.php to get total number of games currently in database
+function getAllGameInfo() {
+    getReviews(getGameData);
+}
+
+async function getReviews(gameDataCallback) {
+    var xmlhttpReviews = new XMLHttpRequest();
+    var strings = window.location.search.split("=");
+    var gameID = strings[1];
+
+    xmlhttpReviews.onreadystatechange = async function() {
+        if(this.readyState == 4 && this.status == 200) {
+            const reviewData = JSON.parse(this.responseText);
+
+            var numReviews = Object.keys(reviewData).length;
+            var totalReviewPercentages = 0.00;
+            resultsContents = "";
+
+            for(var i=0; i<numReviews; i++) {
+                var odd = i%2;
+
+
+                if(i==5)
+                    resultsContents += "<div class=\"collapse multi-collapse\">";
+
+                if(odd) 
+                    resultsContents += "<li class=\"list-group-item text-white fw-bold border-5 border-bottom-0 border-dark bg-secondary\" style=\"font-size: 25px;\">";
+                else
+                    resultsContents += "<li class=\"list-group-item text-white fw-bold border-5 border-bottom-0 border-dark\" style=\"background-color: rgb(86, 93, 99); font-size: 25px;\">";
+
+
+                resultsContents +=
+                    "<a class=\"row justify-content-across\" href=\"" + reviewData[i]['ReviewLink'] + "\">" +
+                        "<div class=\"col-4 text-start\">" + reviewData[i]['SiteName'] + "</div>" +
+                        "<div class=\"col-4 text-center\">" + reviewData[i]['ReviewScore'] + "</div>";
+                        
+                if(reviewData[i]['ReviewPercentage']==0)
+                    resultsContents += "<div class=\"col-4 text-end\">0";
+                else
+                    resultsContents += "<div class=\"col-4 text-end\">";
+                resultsContents +=
+                        reviewData[i]['ReviewPercentage'] + "%</div>" +
+                    "</a>" +
+                "</li>";
+
+                totalReviewPercentages += parseFloat(reviewData[i]['ReviewPercentage']);
+            }
+
+            //update average score in database
+            var average = totalReviewPercentages/numReviews;
+            await updateAverage(gameID, average);
+
+            //if there are more than 5 reviews for the game, setup a button to expand to see all reviews
+            if(numReviews>5) {
+                resultsContents += 
+                        "</div>" +
+                        "<li class=\"btn list-group-item text-center fw-bold bg-dark text-white border-0\" style=\"font-size: 15px;\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\".multi-collapse\">" +
+                            "See All Reviews" +
+                        "</li>";
+            } else {
+                resultsContents +=
+                        "<li class=\"list-group-item bg-dark border-0 pt-1 pb-0\"></li>";
+            }
+
+            document.getElementById("Reviews").innerHTML = resultsContents;
+
+            //call game data after average has been updated
+            gameDataCallback();
+        }    
+    }
+    xmlhttpReviews.open("GET", "ReviewData.php?q=" + gameID, true);
+    xmlhttpReviews.send();
+}
+
+async function updateAverage(gameID, average) {
+    var xmlhttpAverage = new XMLHttpRequest();
+
+    xmlhttpAverage.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+
+        }
+    }
+    xmlhttpAverage.open("GET", "Average.php?gameid=" + gameID + "&average=" + average, true);
+    xmlhttpAverage.send();
+}
+
+//Create request to GameData.php to get all game information on requested Game ID
+function getGameData() {
+    var xmlhttpGameData = new XMLHttpRequest();
+    var strings = window.location.search.split("=");
+    var gameID = strings[1];
+
+    xmlhttpGameData.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            const gameData = JSON.parse(this.responseText);
+
+            //set background image as the game's banner art
+            document.getElementById("GameBG").style.background = "url('" + gameData['GameData']['BannerImage'] + "') center no-repeat";
+            document.getElementById("GameBG").style.backgroundSize =  "cover";
+
+            document.getElementById("BoxArt").innerHTML = "<img src=\"" + gameData['GameData']['BoxArt'] + "\" class=\"img-fluid\"></img>";
+
+            //depending on the game's score, set a background colour
+            if(gameData['GameData']['CurrentScore'] >= 75.0) {
+                document.getElementById("ScoreColour").style.background = "rgba(0, 190, 0, 1)";
+                document.getElementById("ScoreColour").style.height = "75px";
+            } else if(gameData['GameData']['CurrentScore'] >= 60.0) {
+                document.getElementById("ScoreColour").style.background = "rgba(255, 255, 0, 1)";
+                document.getElementById("ScoreColour").style.height = "75px";
+            } else if (gameData['GameData']['CurrentScore'] > 0) {
+                document.getElementById("ScoreColour").style.background = "rgba(255, 0, 0, 1)";
+                document.getElementById("ScoreColour").style.height = "75px";
+            } else {
+                document.getElementById("ScoreColour").style.background = "rgba(100, 100, 100, 1)";
+                document.getElementById("ScoreColour").style.height = "75px";
+            }
+
+            //Check if game has an aggregated score or not. If not, set to N/A, otherwise set the score to two decimal places
+            var gameScore = "";
+            if(gameData['CurrentScore'] == 0.0)
+                gameScore = "N/A";
+            else
+                gameScore = gameData['GameData']['CurrentScore'].toFixed(2) + "%";
+            document.getElementById("Score").innerHTML = gameScore;
+
+            document.getElementById("GameName").innerHTML = gameData['GameData']['GameName'];
+            document.getElementById("Description").innerHTML = gameData['GameData']['Description'];
+            document.getElementById("Developer").innerHTML = gameData['GameData']['DeveloperName'];
+            document.getElementById("Publisher").innerHTML = gameData['GameData']['PublisherName'];
+            document.getElementById("Genre").innerHTML = gameData['GameData']['Genre'];
+
+            var platforms = "";
+
+            for(var key in gameData['PlatformData']) {
+                if(gameData['PlatformData'][key] && key != 'GameID')
+                    platforms += ", " + key;
+            }
+
+            document.getElementById("Platforms").innerHTML = platforms.substring(2);
+
+            //parse release date in desired format (YYYY-MM-DD)
+            var parseReleaseDate = JSON.parse(JSON.stringify(gameData['GameData']["ReleaseDate"]));
+            var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
+            releaseDate = releaseDate[0].split("\"");
+
+            document.getElementById("ReleaseDate").innerHTML = releaseDate[1];
+        }
+    }
+    xmlhttpGameData.open("GET", "GameData.php?q=" + gameID, true);
+    xmlhttpGameData.send();
+}
+
+//Create request to GetTotalGames.php to get total number of games currently in database
 function getTotalNumGames() {
     return new Promise((resolve) => {
         var xmlhttpTotalNumGames = new XMLHttpRequest();
@@ -115,22 +285,7 @@ function getTotalNumGames() {
     });
 }
 
-//Call to PlatformsData.php to obtain the platforms the game is on given the gameID and populates the platforms field of the featured fame section
-function getPlatformData(gameID) {
-    return new Promise((resolve) => {
-        var xmlhttpPlatforms = new XMLHttpRequest();
-
-        xmlhttpPlatforms.onreadystatechange = function() {
-            if(this.readyState == 4 && this.status == 200) {
-                resolve(this.responseText);
-            }
-        };
-        xmlhttpPlatforms.open("GET", "PlatformsData.php?q=" + gameID, true);
-        xmlhttpPlatforms.send();
-    });
-}
-
-//Call to MostRecentRelease.php to obtain list of the most recetnly released games in the database and populates the Most Recent Releases section of the homepage with formatted HTML and CSS
+//Create request to MostRecentRelease.php to obtain list of the most recetnly released games in the database and populates the Most Recent Releases section of the homepage with formatted HTML and CSS
 function mostRecentReleases() {
     var xmlhttpMostRecentReleases = new XMLHttpRequest();
     
@@ -144,7 +299,7 @@ function mostRecentReleases() {
                 var index = i+1;
 
                 //parse release date in desired format (YYYY-MM-DD)
-                var parseReleaseDate = JSON.parse(JSON.stringify(mostRecentReleases[i]["Release Date NA"]));
+                var parseReleaseDate = JSON.parse(JSON.stringify(mostRecentReleases[i]["ReleaseDate"]));
                 var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ")[0];
                 releaseDate = releaseDate.substring(1).split("-");
                 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -209,6 +364,16 @@ function populateYears() {
     document.getElementById("year").innerHTML = html;
 }
 
+function updateViewCount() {
+    var xmlhttpViewCount = new XMLHttpRequest();
+    var strings = window.location.search.split("=");
+    var gameID = strings[1];
+
+    xmlhttpViewCount.open("GET", "ViewCount.php?q=" + gameID, true);
+    xmlhttpViewCount.send();
+}
+
+
 function showResults() {
     var xmlhttpGameResults = new XMLHttpRequest();
     var strings = window.location.search.split("=");
@@ -225,7 +390,8 @@ function showResults() {
 
             var resultsContents = ""
 
-            for(var i=0; i<searchResults.length; i++) {
+            console.log(searchResults.length);
+            for(var i=0; i<Object.keys(searchResults['GameData']).length; i++) {
                 var odd = i%2;  //get if the gameID is even or odd to determine the styling
 
                 //store html and css/bootstrap styling code for displaying search results depending on the gameID (gives table like listing to breakup results and make more readable)
@@ -242,7 +408,7 @@ function showResults() {
                     resultsContents += "<div class=\"col-lg-3 mb-2 d-block d-lg-none\">";
 
                 resultsContents +=
-                                    "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\"><img src=\"" + searchResults[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
+                                    "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults['GameData']['Game' + i]['GameID'] + "\"><img src=\"" + searchResults['GameData']['Game' + i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
                                 "</div>";
 
                 if(!odd)
@@ -252,33 +418,43 @@ function showResults() {
 
                 resultsContents +=
                                     "<div class=\"row\">" +
-                                        "<h2><a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\">" + searchResults[i]['Game Name'] + "</a></h2>" +
+                                        "<h2><a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults['GameData']['Game' + i]['GameID'] + "\">" + searchResults['GameData']['Game' + i]['GameName'] + "</a></h2>" +
                                     "</div>" +
                                     "<div class=\"row\">" +
-                                        "<p>" + searchResults[i]['Description'] + "</p>" +
+                                        "<p>" + searchResults['GameData']['Game' + i]['Description'] + "</p>" +
                                     "</div>" +
                                     "<div class=\"row justify-content-between\">" +
                                         "<div class=\"col-6 Justify-content-start\">" +
-                                            "<tag class=\"fw-bold\">Developer: </tag>" + searchResults[i]['Developer Name'] + "<br>" +
-                                            "<tag class=\"fw-bold\">Publisher: </tag>" + searchResults[i]['Publisher Name'] + "<br>" +
-                                            "<tag class=\"fw-bold\">Genre: </tag>" + searchResults[i]['Genre'] + "<br>";
+                                            "<tag class=\"fw-bold\">Developer: </tag>" + searchResults['GameData']['Game' + i]['DeveloperName'] + "<br>" +
+                                            "<tag class=\"fw-bold\">Publisher: </tag>" + searchResults['GameData']['Game' + i]['PublisherName'] + "<br>" +
+                                            "<tag class=\"fw-bold\">Genre: </tag>" + searchResults['GameData']['Game' + i]['Genre'] + "<br>";
+
+
+                //get the platforms fro mthe platformdata results that has true values and create the string result
+                var platforms = "";
+                var gameID = searchResults['GameData']['Game' + i]['GameID'];
+
+                for(var key in searchResults['PlatformData'][gameID])
+                {
+                    if(searchResults['PlatformData'][gameID][key] && key != 'GameID')
+                        platforms +=  ", " + key;
+                }
 
                 //call function for game's platforms and wait for response
-                var platforms = await getPlatformData(searchResults[i]['GameID']);
-                resultsContents += "<tag class=\"fw-bold\">Platform: </tag>" + platforms + "<br>";
+                resultsContents += "<tag class=\"fw-bold\">Platform: </tag>" + platforms.substring(2) + "<br>";
 
 
                 //parse release date in desired format (YYYY-MM-DD)
-                var parseReleaseDate = JSON.parse(JSON.stringify(searchResults[i]["Release Date NA"]));
+                var parseReleaseDate = JSON.parse(JSON.stringify(searchResults['GameData']['Game' + i]["ReleaseDate"]));
                 var releaseDate = JSON.stringify(parseReleaseDate["date"]).split(" ");
                 releaseDate = releaseDate[0].split("\"");
 
                 //if game's score is 0, means no reviews, set it to N/A
                 var gameScore = "";
-                if(searchResults[i]['CurrentScore'] == 0.0)
+                if(searchResults['GameData']['Game' + i]['CurrentScore'] == 0.0)
                     gameScore = "N/A";
                 else
-                    gameScore = searchResults[i]['CurrentScore'].toFixed(2) + "%";
+                    gameScore = searchResults['GameData']['Game' + i]['CurrentScore'].toFixed(2) + "%";
 
                 resultsContents += 
                                             "<tag class=\"fw-bold\">Release Date: </tag>" + releaseDate[1] +
@@ -295,7 +471,7 @@ function showResults() {
                 } else {
                     resultsContents += 
                             "<div class=\"col-lg-3 mb-2 d-none d-lg-block\">" +
-                                "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults[i]['GameID'] + "\"><img src=\"" + searchResults[i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
+                                "<a href=\"https://gameratingsapp.com/GamePage.html?id=" + searchResults['GameData']['Game' + i]['GameID'] + "\"><img src=\"" + searchResults['GameData']['Game' + i]['BoxArt'] + "\" class=\"img-fluid d-block m-auto\"></a>" +
                             "</div>"; 
                 }
                 resultsContents +=         

@@ -15,7 +15,7 @@
     <body class="bg-secondary d-flex flex-column" onLoad="showMostPopular(); mostRecentReleases(); getFeaturedGame()">
         <!-- Navbar with Site Icon, Title and Search bar -->
         <!-- Create navbar that shows search bar and button on medium screens or larger and stays fixed to the top when scrolling -->
-        <nav class="navbar navbar-expand-md top navbar-dark bg-dark px-1">
+        <nav class="navbar navbar-expand-md top navbar-dark bg-dark px-1" style="z-index: 2;">
             <div class="container-xxl"> <!-- use xxl container to keep icon/title and search bar/button no further than a certain distance from each other in case viewed on extremely large screens  -->
                 <!-- set the icon for the website and the title (current doesn't link to anything, but will be homepage button)-->
                 <a href="https://gameratingsapp.com/" class="navbar-brand">
@@ -63,7 +63,7 @@
                 <input class="hideObj" type="radio" name="mostPopular" id="tenthGame">
                 <ul>
                     <label class="d-block" for="firstGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG1">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 1">
                             <h2 class="textShadow" style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName1"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -85,7 +85,7 @@
                         </li>
                     </label>
                     <label class="d-block" for="secondGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG2">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 2">
                             <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName2"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -107,7 +107,7 @@
                         </li>
                     </label>
                     <label class="d-block" for="thirdGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG3">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 3">
                             <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName3"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -129,7 +129,7 @@
                         </li>
                     </label>
                     <label class="d-block" for="fourthGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG4">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG4" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 4">
                             <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName4"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -151,7 +151,7 @@
                         </li>
                     </label>
                     <label class="d-block" for="fifthGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG5">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG5" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 5">
                             <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName5"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -173,7 +173,7 @@
                         </li>
                     </label>
                     <label class="d-block" for="sixthGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG6">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG6" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 6">
                             <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName6"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -195,7 +195,7 @@
                         </li>
                     </label>
                     <label class="d-block" for="seventhGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG7">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG7" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 7">
                             <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName7"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -217,7 +217,7 @@
                         </li>
                     </label>
                     <label class="d-block" for="eightGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG8">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG8" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 8">
                             <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName8"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -239,7 +239,7 @@
                         </li>
                     </label>
                     <label class="d-block" for="ninthGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG9">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG9" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 9">
                             <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName9"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -261,7 +261,7 @@
                         </li>
                     </label>
                     <label class="d-block" for="tenthGame">
-                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG10">
+                        <li class="d-flex text-white justify-content-center align-items-center" id="GameBG10" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Most Popular 10">
                             <h2 style="font-size: clamp(1rem, 2vw, 2.5rem)"><span id="GameName10"></span></h2>
                             <div class="container-fluid">
                                 <div class="row mt-2 mx-2 align-items-center">
@@ -320,7 +320,7 @@
                                 <tag class="fw-bold">Release Date: </tag><span id="FeaturedGameReleaseDate"></span>
                             </div>
                             <div class="col-6 d-flex justify-content-center align-items-center">
-                                <h1 class="fw-bold" style="transform: scale(2.0,2.0)"><span id="FeaturedGameScore"></span>%</h1>
+                                <h1 class="fw-bold" style="transform: scale(2.0,2.0)"><span id="FeaturedGameScore"></span></h1>
                             </div>
                         </div>
                     </div>
@@ -335,7 +335,7 @@
             
                 <!-- Display title of section on page -->
                 <div class="row justify-content-center">
-                    <h2 class="fw-bold px-3">Recent Releases</h2>
+                    <h2 class="fw-bold px-3">New Releases</h2>
                     <hr class="bg-light"> <!-- override height and colour once I get to doing the custom theme -->
                 </div>
 

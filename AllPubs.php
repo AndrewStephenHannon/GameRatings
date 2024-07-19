@@ -18,7 +18,7 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain information from the database that is needed for the page's request
-    $sqlquery = "SELECT * FROM PublisherPage";
+    $sqlquery = "SELECT * FROM Publishers";
     $result = sqlsrv_query($connection, $sqlquery);
 
     $response = "<select class=\"form-select\" id=\"Pub\" name=\"Publisher\">";
@@ -29,7 +29,7 @@
     if($result)
     {
         while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-            $response .= "<option value='" . $row["Publisher Name"] . "'>" . $row["Publisher Name"] . "</option>";
+            $response .= "<option value='" . $row["PublisherName"] . "'>" . $row["PublisherName"] . "</option>";
         }
     }
     else
