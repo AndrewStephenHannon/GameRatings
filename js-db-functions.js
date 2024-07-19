@@ -47,7 +47,7 @@ function showMostPopular() {
                     boxScoreLink += "style=\"background: rgba(100, 100, 100, 1);\">";
 
                 //style text of Current Score to be at bottom of parenting div and centered with a text shadow
-                if(mostPopular[i]['CurrentScore'] > 0)
+                if(mostPopular[i]['CurrentScore'] >= 0)
                     boxScoreLink += "<span class=\"text-center fw-bold textShadow bottom-centered\" style=\"font-size: 1.5em;\">" + mostPopular[i]['CurrentScore'].toFixed(2) + "%</span>";
                 else
                     boxScoreLink += "<span class=\"text-center fw-bold textShadow bottom-centered\" style=\"font-size: 1.5em;\">N/A</span>";
@@ -103,7 +103,7 @@ async function getFeaturedGame() {
             document.getElementById("FeaturedGamePlatforms").innerHTML = platforms.substring(2); //await getPlatformData(gameID);
 
             var gameScore = "";
-            if(gameData['CurrentScore'] == 0.0)
+            if(gameData['CurrentScore'] < 0.0)
                 gameScore = "N/A";
             else
                 gameScore = gameData['GameData']['CurrentScore'].toFixed(2) + "%";
@@ -167,8 +167,15 @@ async function getReviews(gameDataCallback) {
             var average = totalReviewPercentages/numReviews;
             await updateAverage(gameID, average);
 
+            //If there are no reviews for the game, display message indicating no reviews
+            if(numReviews==0) {
+                resultsContents += 
+                        "<li class=\"list-group-item text-center fw-bold text-white border-0\" style=\"background-color: rgb(86, 93, 99); font-size: 15px;\">" +
+                            "No Reviews" +
+                        "</li>";
+            }
             //if there are more than 5 reviews for the game, setup a button to expand to see all reviews
-            if(numReviews>5) {
+            else if(numReviews>5) {
                 resultsContents += 
                         "</div>" +
                         "<li class=\"btn list-group-item text-center fw-bold bg-dark text-white border-0\" style=\"font-size: 15px;\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\".multi-collapse\">" +
@@ -234,7 +241,7 @@ function getGameData() {
 
             //Check if game has an aggregated score or not. If not, set to N/A, otherwise set the score to two decimal places
             var gameScore = "";
-            if(gameData['CurrentScore'] == 0.0)
+            if(gameData['GameData']['CurrentScore'] < 0)
                 gameScore = "N/A";
             else
                 gameScore = gameData['GameData']['CurrentScore'].toFixed(2) + "%";
@@ -450,7 +457,7 @@ function showResults() {
 
                 //if game's score is 0, means no reviews, set it to N/A
                 var gameScore = "";
-                if(searchResults['GameData']['Game' + i]['CurrentScore'] == 0.0)
+                if(searchResults['GameData']['Game' + i]['CurrentScore'] < 0.0)
                     gameScore = "N/A";
                 else
                     gameScore = searchResults['GameData']['Game' + i]['CurrentScore'].toFixed(2) + "%";
