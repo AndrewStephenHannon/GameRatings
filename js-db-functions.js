@@ -373,7 +373,6 @@ function updateViewCount() {
     xmlhttpViewCount.send();
 }
 
-
 function showResults() {
     var xmlhttpGameResults = new XMLHttpRequest();
     var strings = window.location.search.split("=");
