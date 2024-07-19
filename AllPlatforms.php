@@ -18,7 +18,8 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain information from the database that is needed for the page's request
-    $sqlquery = "SELECT TOP 1 * FROM Platforms;";
+    //$sqlquery = "SELECT TOP 1 * FROM Platforms;";
+    $sqlquery = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Platforms' AND COLUMN_NAME != 'GameID' ORDER BY COLUMN_NAME ASC";
     $result = sqlsrv_query($connection, $sqlquery);
 
     $response = "<select class=\"form-select\" id=\"Platform\" name=\"Platform\">";
@@ -28,12 +29,8 @@
     //if SQL fails, print out the error
     if($result)
     {
-        $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
-
-        foreach($row as $key => $value)
-        {
-            if($key != "GameID")
-                $response .= "<option value='" . $key . "'>" . $key . "</option>";
+        while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+            $response .= "<option value='" . $row["COLUMN_NAME"] . "'>" . $row["COLUMN_NAME"] . "</option>";
         }
     }
     else

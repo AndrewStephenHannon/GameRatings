@@ -18,7 +18,7 @@
         echo "No connection established<br>";
 
     //create SQL query to obtain information from the database that is needed for the page's request
-    $sqlquery = "SELECT * FROM Publishers";
+    $sqlquery = "SELECT * FROM Publishers ORDER BY CAST(PublisherName AS VARCHAR(100))";
     $result = sqlsrv_query($connection, $sqlquery);
 
     $response = "<select class=\"form-select\" id=\"Pub\" name=\"Publisher\">";
